@@ -1,41 +1,40 @@
-# Prerequisites
+# --- C++ Standard ---
 *.d
-
-# Compiled Object files
-*.slo
-*.lo
 *.o
 *.obj
-
-# Precompiled Headers
 *.gch
 *.pch
-
-# Linker files
 *.ilk
-
-# Debugger Files
 *.pdb
-
-# Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
 *.lai
 *.la
 *.a
 *.lib
-
-# Executables
 *.exe
 *.out
 *.app
 
-# debug information files
-*.dwo
+# --- Archivos específicos de tu proyecto (según tu imagen) ---
+# Ignora el ejecutable "main" que sale en tu raíz
+main
+
+# Ignora las salidas de texto para que no se ensucie el repo
+Salidas/*.txt
+
+# --- VS Code ---
+.vscode/ipch/
+.vscode/browse.vc.db
+# Nota: NO ignoramos settings.json ni tasks.json para que tus amigos los tengan
+
+# --- Eclipse ---
+# IMPORTANTE: NO ignores .project ni .cproject. 
+# Pero sí ignora las carpetas de compilación que crea Eclipse:
+Debug/
+Release/
+
+# --- Otros ---
+.DS_Store
+Thumbs.db
