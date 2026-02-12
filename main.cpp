@@ -10,13 +10,13 @@ int columnas = 12;  //son 12 columnas porque hay que tener en cuenta también la
 
 int main(){ 
     map<int, string> Tableros = {
-        {1, "HORAPUNTA1.txt"},
-        {2, "HORAPUNTA2.txt"},
-        {3, "HORAPUNTA3.txt"},
-        {4, "HORAPUNTA4.txt"},
-        {5, "HORAPUNTA5.txt"},
-        {6, "HORAPUNTA6.txt"},
-        {7, "HORAPUNTA7.txt"},
+        {1, "Salidas/HORAPUNTA1.txt"},
+        {2, "Salidas/HORAPUNTA2.txt"},
+        {3, "Salidas/HORAPUNTA3.txt"},
+        {4, "Salidas/HORAPUNTA4.txt"},
+        {5, "Salidas/HORAPUNTA5.txt"},
+        {6, "Salidas/HORAPUNTA6.txt"},
+        {7, "Salidas/HORAPUNTA7.txt"},
     };
     int opcion;
     vector<vector<char>> tablero(filas, vector<char>(columnas));
