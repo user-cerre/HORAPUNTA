@@ -18,42 +18,46 @@ int main(){
         {6, "../Salidas/HORAPUNTA6.txt"},
         {7, "../Salidas/HORAPUNTA7.txt"},
     };
+    bool opcionValida = false;
     int opcion;
     vector<vector<char>> tablero(filas, vector<char>(columnas));
-    cout << "Seleccione un tablero para jugar (1-7): ";
-    cin >> opcion;
-    if (Tableros.find(opcion) != Tableros.end()) {
-        string nombreArchivo = Tableros[opcion];
-        ifstream archivo(nombreArchivo);
-        if (archivo.is_open()) {
-            string linea;
-            int j = 0;
-            while (getline(archivo, linea)) {   
-                int i = 0;
-                while(i < linea.size()){
-                    tablero[j][i] = (linea[i]); 
-                    i++;
+
+    while(!opcionValida){
+        cout << "Seleccione un tablero para jugar (1-7): ";
+        cin >> opcion;
+        if (Tableros.find(opcion) != Tableros.end()) {
+            string nombreArchivo = Tableros[opcion];
+            ifstream archivo(nombreArchivo);
+            if (archivo.is_open()) {
+                string linea;
+                int j = 0;
+                while (getline(archivo, linea)) {   
+                    int i = 0;
+                    while(i < int(linea.size())){
+                        tablero[j][i] = (linea[i]); 
+                        i++;
+                    }
+                    j++;
                 }
-                j++;
+                archivo.close();
+                opcionValida = true;
+            } else {
+                cout << "No se pudo abrir el archivo: " << nombreArchivo << endl;
+                break;
             }
-            archivo.close();
         } else {
-            cout << "No se pudo abrir el archivo: " << nombreArchivo << endl;
+            cout << "Opción no válida. Por favor, seleccione un número entre 1 y 7." << endl;
         }
-    } else {
-        cout << "Opción no válida. Por favor, seleccione un número entre 1 y 7." << endl;
     }
 
-    for (int i = 0; i < tablero.size(); i++)
+    for (int i = 0; i < int(tablero.size()); i++)
     {
-        for (int j = 0; j < tablero[i].size(); j++)
+        for (int j = 0; j < int(tablero[i].size()); j++)
         {
             cout << tablero[i][j];
-            if(j == tablero[i].size() - 1){ 
-                cout << endl; 
-            }
-
         }
+        cout << endl; 
     }
+
     return 0; 
 }
