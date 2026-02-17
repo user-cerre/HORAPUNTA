@@ -3,8 +3,12 @@
 #include <map>
 #include <algorithm>
 #include <fstream>
+#include <filesystem>
+
 
 using namespace std;
+namespace fs = std::filesystem;
+
 #ifndef OPERACIONESMATRIZ_H
 #define OPERACIONESMATRIZ_H
 
