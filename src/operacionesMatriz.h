@@ -10,8 +10,6 @@ using namespace std;
 
 int const filas = 6; //variables globales
 int const columnas = 12;  //variables globales son 12 columnas porque hay que tener en cuenta también las posiciones de las comas.
-vector<vector<char>> tableroAuxiliar;
-
 void mostrar(const vector<vector<char>> &tablero);
 
 void cargarTablero(vector<vector<char>> &tablero);
