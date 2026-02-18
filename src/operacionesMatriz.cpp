@@ -17,7 +17,7 @@ void cargarTablero(vector<vector<char>> &tablero){
     string rutaSalidas = "../Salidas";
     if(fs::exists(rutaSalidas) && fs::is_directory(rutaSalidas)){
         
-        for(fs::directory_entry archivo: fs::directory_iterator(rutaSalidas)){ // directory_entry no pilla los directorios en orden, por eso metemos las ruta
+        for(fs::directory_entry archivo: fs::directory_iterator(rutaSalidas)){ // directory_entry no pilla los directorios en orden, por eso metemos las ruta en un vector
             salaDeEspera.push_back(archivo.path());
         }
         sort(salaDeEspera.begin(), salaDeEspera.end());
