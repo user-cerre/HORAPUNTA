@@ -64,3 +64,49 @@ void cargarTablero(vector<vector<char>> &tablero){
         }
     }
 }
+
+void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY){
+    bool encontrado = false;
+    for (int i = 0; i < filas; i++)
+    {
+        for (int j = 0; j < columnas; j++)
+        {
+            if(tablero[i][j] == 'X'){
+                posX = i;
+                posY = j;
+                encontrado = true;
+                break;
+            }
+        }
+    }
+}
+
+//si a su alrededor no hay ninguna otra letra igual, es un coche.
+bool esCoche (vector<vector<char>> &tablero, int x, int y, char vehiculo){
+    if(tablero[x+1][y] != vehiculo || tablero[x][y+1] != vehiculo || tablero[x-1[y] != vehiculo] || 
+            tablero[x][y-1] != vehiculo){
+                return true;
+            }
+    return false;
+}
+
+void movimiento(vector<vector<char>> &tablero, char movimiento, int posX, int posY){
+    char vehiculo;
+    bool puedeMover = true;
+    switch (movimiento)
+    {
+    case 'w':
+        vehiculo = tablero[posX+1][posY];
+        if(esCoche(tablero, posX+1, posY, vehiculo)){
+            tablero[posX+1][posY] = 'X';
+            tablero[posX][posY] = vehiculo;
+        } else{
+
+        }
+        
+        break;
+    
+    default:
+        break;
+    }
+}

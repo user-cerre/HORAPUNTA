@@ -13,6 +13,7 @@ int main(){
     cerr<<"Carlos Paredes Ruiz"<<endl;
     cerr<<"Gabriel Ramos Sanchez"<<endl;
     cout<<endl;
+    
     vector<vector<char>> tablero(filas, vector<char>(columnas));
     cargarTablero(tablero);
     mostrar(tablero);

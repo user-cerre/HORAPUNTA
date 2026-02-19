@@ -18,5 +18,9 @@ void mostrar(const vector<vector<char>> &tablero);
 
 void cargarTablero(vector<vector<char>> &tablero);
 
+bool esCoche (vector<vector<char>> &tablero, int x, int y, char vehiculo);
+
+void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY);
+
 
 #endif
