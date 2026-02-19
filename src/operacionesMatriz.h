@@ -14,13 +14,19 @@ namespace fs = std::filesystem;
 
 int const filas = 6; //variables globales
 int const columnas = 12;  //variables globales son 12 columnas porque hay que tener en cuenta también las posiciones de las comas.
+
 void mostrar(const vector<vector<char>> &tablero);
 
 void cargarTablero(vector<vector<char>> &tablero);
 
-bool esCoche (vector<vector<char>> &tablero, int x, int y, char vehiculo);
-
 void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY);
 
+bool dentroLimites(int x, int y);
+
+void delimitarVehiculo(vector<vector<char>> tablero, int x, int y, vector<pair<int,int>> V);
+
+bool puedeMoverse(vector<vector<char>> tablero, int coordenadaDeX, vector<pair<int,int>> V);
+
+void movimiento(vector<vector<char>> &tablero, char movimiento);
 
 #endif

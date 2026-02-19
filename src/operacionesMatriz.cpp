@@ -1,6 +1,6 @@
 #include "operacionesMatriz.h"
 
-
+vector<vector<char>> Visitados(filas, vector<char>(columnas, false));
 
 void mostrar(const vector<vector<char>>& tablero) {
     for (const auto& fila : tablero) {
@@ -67,7 +67,7 @@ void cargarTablero(vector<vector<char>> &tablero){
 
 void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY){
     bool encontrado = false;
-    for (int i = 0; i < filas; i++)
+    for (int i = 0; i < filas && !encontrado; i++)
     {
         for (int j = 0; j < columnas; j++)
         {
@@ -81,32 +81,129 @@ void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY){
     }
 }
 
-//si a su alrededor no hay ninguna otra letra igual, es un coche.
-bool esCoche (vector<vector<char>> &tablero, int x, int y, char vehiculo){
-    if(tablero[x+1][y] != vehiculo || tablero[x][y+1] != vehiculo || tablero[x-1[y] != vehiculo] || 
-            tablero[x][y-1] != vehiculo){
-                return true;
-            }
-    return false;
+bool dentroLimites(int x, int y){
+    if(x >= filas || y >= columnas || x < 0 || y < 0){
+        return false;
+    }
+    return true;
 }
 
-void movimiento(vector<vector<char>> &tablero, char movimiento, int posX, int posY){
+void delimitarVehiculo(vector<vector<char>> tablero, int x, int y, vector<pair<int,int>> &V, char vehiculo){
+    if(dentroLimites(x,y) && tablero[x][y] == vehiculo && !Visitados[x][y]){
+        pair<int,int> coord (x,y);
+        V.push_back(coord);
+        Visitados[x][y] = true;
+        delimitarVehiculo(tablero, x, y+2, V, vehiculo);
+        delimitarVehiculo(tablero, x+1, y, V, vehiculo); //sumo 2 al desplazarme a izq o dere para evitar las comas
+        delimitarVehiculo(tablero, x, y-2, V, vehiculo);
+        delimitarVehiculo(tablero, x-1, y, V, vehiculo);
+        Visitados[x][y] = false;
+    }
+}
+
+bool puedeMoverse(vector<vector<char>> tablero, int coordenadaDeX, vector<pair<int,int>> V, char mov){
+    bool puede = true;
+    for (int i = 0; i < V.size() && puede; i++)
+    {
+        switch (mov)
+        {
+        case 'u':
+        case 'd':
+            if(V[i].second != coordenadaDeX){
+                puede = false;
+            }
+            break;
+
+        case 'r':
+        case 'l':
+            if(V[i].first != coordenadaDeX){
+                puede = false;
+            }
+            break;
+        
+        default:
+            break;
+        }
+    }
+    return puede;
+}
+
+void movimiento(vector<vector<char>> &tablero, char movimiento){
+    int posX, posY;
+    encontrarX(tablero, posX, posY);
     char vehiculo;
-    bool puedeMover = true;
+    vector<pair<int,int>> V;
     switch (movimiento)
     {
-    case 'w':
+    case 'u':
         vehiculo = tablero[posX+1][posY];
-        if(esCoche(tablero, posX+1, posY, vehiculo)){
+        delimitarVehiculo(tablero, posX+1, posY, V, vehiculo);
+        if(V.size() == 1){
             tablero[posX+1][posY] = 'X';
             tablero[posX][posY] = vehiculo;
-        } else{
-
-        }
-        
+        } else if(puedeMoverse(tablero, posY, V, movimiento)){
+            if(V.size() == 2){
+                tablero[posX+2][posY] = 'X';
+                tablero[posX][posY] = vehiculo;
+            } else{
+                tablero[posX+3][posY] = 'X';
+                tablero[posX][posY] = vehiculo;
+            }
+        } 
         break;
-    
+    case 'd':
+        vehiculo = tablero[posX-1][posY];
+        delimitarVehiculo(tablero, posX-1, posY, V, vehiculo);
+        if(V.size() == 1){
+            tablero[posX-1][posY] = 'X';
+            tablero[posX][posY] = vehiculo;
+        } else if(puedeMoverse(tablero, posY, V, movimiento)){
+            if(V.size() == 2){
+                tablero[posX-2][posY] = 'X';
+                tablero[posX][posY] = vehiculo;
+            } else{
+                tablero[posX-3][posY] = 'X';
+                tablero[posX][posY] = vehiculo;
+            }
+        } 
+    break;
+
+    case 'r':
+        vehiculo = tablero[posX][posY-2];
+        delimitarVehiculo(tablero, posX, posY-2, V, vehiculo);
+        if(V.size() == 1){
+            tablero[posX][posY-2] = 'X';
+            tablero[posX][posY] = vehiculo;
+        } else if(puedeMoverse(tablero, posX, V, movimiento)){
+            if(V.size() == 2){
+                tablero[posX][posY-4] = 'X';
+                tablero[posX][posY] = vehiculo;
+            } else{
+                tablero[posX][posY-6] = 'X';
+                tablero[posX][posY] = vehiculo;
+            }
+        } 
+    break;
+
+    case 'l':
+        vehiculo = tablero[posX][posY+2];
+        delimitarVehiculo(tablero, posX, posY+2, V, vehiculo);
+        if(V.size() == 1){
+            tablero[posX][posY+2] = 'X';
+            tablero[posX][posY] = vehiculo;
+        } else if(puedeMoverse(tablero, posX, V, movimiento)){
+            if(V.size() == 2){
+                tablero[posX][posY+4] = 'X';
+                tablero[posX][posY] = vehiculo;
+            } else{
+                tablero[posX][posY+6] = 'X';
+                tablero[posX][posY] = vehiculo;
+            }
+        } 
+    break;
+
     default:
+        cout << "Movimiento no válido, escoja de nuevo" << endl;
         break;
     }
 }
