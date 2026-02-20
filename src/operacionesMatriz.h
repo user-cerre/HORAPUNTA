@@ -7,6 +7,7 @@
 
 
 using namespace std;
+using namespace filesystem;
 namespace fs = std::filesystem;
 
 #ifndef OPERACIONESMATRIZ_H

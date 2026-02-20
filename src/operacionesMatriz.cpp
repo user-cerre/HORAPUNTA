@@ -15,9 +15,9 @@ void cargarTablero(vector<vector<char>> &tablero){
     map<int, string> Tableros;
     vector<string> salaDeEspera; // Se utiliza para ordenar el nombre de los ficheros antes de ponerlo en el mapa
     string rutaSalidas = "../Salidas";
-    if(fs::exists(rutaSalidas) && fs::is_directory(rutaSalidas)){
+    if(exists(rutaSalidas) && is_directory(rutaSalidas)){
         
-        for(fs::directory_entry archivo: fs::directory_iterator(rutaSalidas)){ // directory_entry no pilla los directorios en orden, por eso metemos las ruta en un vector
+        for(directory_entry archivo: directory_iterator(rutaSalidas)){ // directory_entry no pilla los directorios en orden, por eso metemos las ruta en un vector
             salaDeEspera.push_back(archivo.path());
         }
         sort(salaDeEspera.begin(), salaDeEspera.end());
@@ -29,7 +29,7 @@ void cargarTablero(vector<vector<char>> &tablero){
 
         }
     }else{
-        cout << "Error al intentar acceder a la ruta (revisar código) \n" <<endl;
+        cout << "Error al intentar acceder a la ruta (revisar código)" <<endl;
     }
 
 
@@ -37,7 +37,7 @@ void cargarTablero(vector<vector<char>> &tablero){
     int opcion;
 
     while(!opcionValida){
-        cout << "Seleccione un tablero para jugar (1-"<< int(Tableros.size()) <<"): ";
+        cout << "Seleccione un tablero para jugar (1-"<< Tableros.size() <<"): ";
         cin >> opcion;
         if (Tableros.find(opcion) != Tableros.end()) {
             string nombreArchivo = Tableros[opcion];
@@ -47,7 +47,7 @@ void cargarTablero(vector<vector<char>> &tablero){
                 int j = 0;
                 while (getline(archivo, linea)) {   
                     int i = 0;
-                    while(i < int(linea.size())){
+                    while(i < linea.size()){
                         tablero[j][i] = (linea[i]); 
                         i++;
                     }
@@ -100,8 +100,8 @@ void delimitarVehiculo(vector<vector<char>> tablero, int x, int y, vector<pair<i
         Visitados[x][y] = false;
     }
 }
-
-bool puedeMoverse(vector<vector<char>> tablero, int coordenadaDeX, vector<pair<int,int>> V, char mov){
+//Revisión
+bool puedeMoverse(int coordenadaDeX, vector<pair<int,int>> V, char mov){
     bool puede = true;
     for (int i = 0; i < V.size() && puede; i++)
     {
@@ -137,6 +137,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
     switch (movimiento)
     {
     case 'u':
+    V.clear();
     if(dentroLimites(posX+1, posY)){
         vehiculo = tablero[posX+1][posY];
         delimitarVehiculo(tablero, posX+1, posY, V, vehiculo);
@@ -144,7 +145,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
             tablero[posX+1][posY] = 'X';
             tablero[posX][posY] = vehiculo;
             movimientoValido = true;
-        } else if(puedeMoverse(tablero, posY, V, movimiento)){
+        } else if(puedeMoverse(posY, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX+2][posY] = 'X';
                 tablero[posX][posY] = vehiculo;
@@ -165,6 +166,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
     }
         break;
     case 'd':
+    V.clear();
     if(dentroLimites(posX-1, posY)){
         vehiculo = tablero[posX-1][posY];
         delimitarVehiculo(tablero, posX-1, posY, V, vehiculo);
@@ -172,7 +174,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
             tablero[posX-1][posY] = 'X';
             tablero[posX][posY] = vehiculo;
             movimientoValido = true;
-        } else if(puedeMoverse(tablero, posY, V, movimiento)){
+        } else if(puedeMoverse(posY, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX-2][posY] = 'X';
                 tablero[posX][posY] = vehiculo;
@@ -194,6 +196,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
     break;
 
     case 'r':
+    V.clear();
     if(dentroLimites(posX, posY-1)){
         vehiculo = tablero[posX][posY-2];
         delimitarVehiculo(tablero, posX, posY-2, V, vehiculo);
@@ -201,7 +204,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
             tablero[posX][posY-2] = 'X';
             tablero[posX][posY] = vehiculo;
             movimientoValido = true;
-        } else if(puedeMoverse(tablero, posX, V, movimiento)){
+        } else if(puedeMoverse(posX, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX][posY-4] = 'X';
                 tablero[posX][posY] = vehiculo;
@@ -223,6 +226,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
     break;
 
     case 'l':
+    V.clear();
     if(dentroLimites(posX, posY+1)){
         vehiculo = tablero[posX][posY+2];
         delimitarVehiculo(tablero, posX, posY+2, V, vehiculo);
@@ -230,7 +234,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
             tablero[posX][posY+2] = 'X';
             tablero[posX][posY] = vehiculo;
             movimientoValido = true;
-        } else if(puedeMoverse(tablero, posX, V, movimiento)){
+        } else if(puedeMoverse(posX, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX][posY+4] = 'X';
                 tablero[posX][posY] = vehiculo;
