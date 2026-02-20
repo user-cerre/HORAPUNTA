@@ -18,19 +18,37 @@ int main(){
     vector<vector<char>> aux(filas, vector<char>(columnas));
     cargarTablero(tablero);
     mostrar(tablero);
+    cout << endl;
 
-    cout << "Elija un movimiento para hacer sobre el tablero elegido: " << endl;
-    cout << "u (arriba), d (abajo), l (izquierda), r (derecha), e (salir)" << endl;
+    //cout << "Elija un movimiento para hacer sobre el tablero elegido: " << endl;
+    //cout << "u (arriba), d (abajo), l (izquierda), r (derecha), e (salir)" << endl;
 
-    char opcion;
-    while(opcion != 'e'){
-        aux = tablero;
-        cin >> opcion;
-        if(opcion != 'e'){
-            movimiento(aux, opcion);
-            mostrar(aux);
-        } 
-     }
+    //char opcion;
+    //while(opcion != 'e'){
+    //    aux = tablero;
+    //    cin >> opcion;
+    //    if(opcion != 'e'){
+    //        movimiento(aux, opcion);
+    //        mostrar(aux);
+    //    } 
+    // }
+
+    cout << "Inicio de los movimientos de prueba: " << endl;
+
+    aux = tablero;
+    movimiento(aux, 'u');
+    mostrar(aux);
+    aux = tablero;
+    movimiento(aux, 'd');
+    mostrar(aux);
+    aux = tablero;
+    movimiento(aux, 'r');
+    mostrar(aux);
+    aux = tablero;
+    movimiento(aux, 'l');
+    mostrar(aux); 
+
+    cout << "Fin de los movimientos de prueba" << endl;
 
     return 0; 
 }
