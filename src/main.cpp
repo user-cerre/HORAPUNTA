@@ -29,7 +29,7 @@ int main(){
         if(opcion != 'e'){
             movimiento(aux, opcion);
             mostrar(aux);
-        }
+        } 
      }
 
     return 0; 

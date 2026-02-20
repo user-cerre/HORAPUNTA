@@ -132,74 +132,123 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
     int posX, posY;
     encontrarX(tablero, posX, posY);
     char vehiculo;
+    bool movimientoValido = false;
     vector<pair<int,int>> V;
     switch (movimiento)
     {
     case 'u':
+    if(dentroLimites(posX+1, posY)){
         vehiculo = tablero[posX+1][posY];
         delimitarVehiculo(tablero, posX+1, posY, V, vehiculo);
         if(V.size() == 1){
             tablero[posX+1][posY] = 'X';
             tablero[posX][posY] = vehiculo;
+            movimientoValido = true;
         } else if(puedeMoverse(tablero, posY, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX+2][posY] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             } else{
                 tablero[posX+3][posY] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             }
         } 
+        if(movimientoValido){
+            cout << "Has movido el vehículo " << vehiculo << " hacia arriba" << endl;
+        } else{
+            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia arriba" << endl;
+        }
+    } else{
+        cout << "No se ha podido mover el vehículo hacia arriba porque se encuentra en el límite del tablero" << endl;
+    }
         break;
     case 'd':
+    if(dentroLimites(posX-1, posY)){
         vehiculo = tablero[posX-1][posY];
         delimitarVehiculo(tablero, posX-1, posY, V, vehiculo);
         if(V.size() == 1){
             tablero[posX-1][posY] = 'X';
             tablero[posX][posY] = vehiculo;
+            movimientoValido = true;
         } else if(puedeMoverse(tablero, posY, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX-2][posY] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             } else{
                 tablero[posX-3][posY] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             }
         } 
+        if(movimientoValido){
+            cout << "Has movido el vehículo " << vehiculo << " hacia abajo" << endl;
+        } else{
+            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia abajo" << endl;
+        }
+    } else{
+        cout << "No se ha podido mover el vehículo hacia abajo porque se encuentra en el límite del tablero" << endl;
+    }
     break;
 
     case 'r':
+    if(dentroLimites(posX, posY-1)){
         vehiculo = tablero[posX][posY-2];
         delimitarVehiculo(tablero, posX, posY-2, V, vehiculo);
         if(V.size() == 1){
             tablero[posX][posY-2] = 'X';
             tablero[posX][posY] = vehiculo;
+            movimientoValido = true;
         } else if(puedeMoverse(tablero, posX, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX][posY-4] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             } else{
                 tablero[posX][posY-6] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             }
         } 
+        if(movimientoValido){
+            cout << "Has movido el vehículo " << vehiculo << " hacia la derecha" << endl;
+        } else{
+            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la derecha" << endl;
+        }
+    } else{
+        cout << "No se ha podido mover el vehículo hacia la derecha porque se encuentra en el límite del tablero" << endl;
+    }
     break;
 
     case 'l':
+    if(dentroLimites(posX, posY+1)){
         vehiculo = tablero[posX][posY+2];
         delimitarVehiculo(tablero, posX, posY+2, V, vehiculo);
         if(V.size() == 1){
             tablero[posX][posY+2] = 'X';
             tablero[posX][posY] = vehiculo;
+            movimientoValido = true;
         } else if(puedeMoverse(tablero, posX, V, movimiento)){
             if(V.size() == 2){
                 tablero[posX][posY+4] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             } else{
                 tablero[posX][posY+6] = 'X';
                 tablero[posX][posY] = vehiculo;
+                movimientoValido = true;
             }
         } 
+        if(movimientoValido){
+            cout << "Has movido el vehículo " << vehiculo << " hacia la izquierda" << endl;
+        } else{
+            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la izquierda" << endl;
+        }
+    } else{
+        cout << "No se ha podido mover el vehículo hacia la izquierda porque se encuentra en el límite del tablero" << endl;
+    }
     break;
 
     default:
