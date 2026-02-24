@@ -69,9 +69,25 @@ void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY){
     bool encontrado = false;
     for (int i = 0; i < filas && !encontrado; i++)
     {
-        for (int j = 0; j < columnas; j++)
+        for (int j = 0; j < columnas; j+=2)
         {
+
             if(tablero[i][j] == 'X'){
+                posX = i;
+                posY = j;
+                encontrado = true;
+                break;
+            }
+        }
+    }
+}
+void encontrarZ(vector<vector<char>> &tablero, int &posX, int &posY){
+    bool encontrado = false;
+    for (int i = 0; i < filas && !encontrado; i++)
+    {
+        for (int j = 0; j < columnas; j+=2)
+        {
+            if(tablero[i][j] == 'Z'){
                 posX = i;
                 posY = j;
                 encontrado = true;
@@ -160,6 +176,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
             cout << "Has movido el vehículo " << vehiculo << " hacia arriba" << endl;
         } else{
             cout << "No se ha podido mover el vehículo " << vehiculo << " hacia arriba" << endl;
+            cout<<endl;
         }
     } else{
         cout << "No se ha podido mover el vehículo hacia arriba porque se encuentra en el límite del tablero" << endl;
@@ -192,6 +209,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
         }
     } else{
         cout << "No se ha podido mover el vehículo hacia abajo porque se encuentra en el límite del tablero" << endl;
+        cout<<endl;
     }
     break;
 
@@ -219,6 +237,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
             cout << "Has movido el vehículo " << vehiculo << " hacia la derecha" << endl;
         } else{
             cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la derecha" << endl;
+            cout << endl;
         }
     } else{
         cout << "No se ha podido mover el vehículo hacia la derecha porque se encuentra en el límite del tablero" << endl;
@@ -249,6 +268,7 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
             cout << "Has movido el vehículo " << vehiculo << " hacia la izquierda" << endl;
         } else{
             cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la izquierda" << endl;
+            cout<<endl;
         }
     } else{
         cout << "No se ha podido mover el vehículo hacia la izquierda porque se encuentra en el límite del tablero" << endl;
@@ -259,4 +279,12 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
         cout << "Movimiento no válido, escoja de nuevo" << endl;
         break;
     }
+}
+
+int calcularHeuristica(vector<vector<char>> &tablero){
+    int posXdeX, posYdeX, posXdeZ, posYdeZ;
+    int distanciaManhattan;
+    encontrarX(tablero, posXdeX, posYdeX);
+    encontrarZ(tablero, posXdeZ, posYdeZ);
+    return abs(posXdeX - (posXdeZ)) + abs((posYdeX/2 - posYdeZ/2)); //dividimos entre 2 porque las columnas van de 2 en 2 por las comas
 }
