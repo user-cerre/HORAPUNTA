@@ -288,3 +288,5 @@ int calcularHeuristica(vector<vector<char>> &tablero){
     encontrarZ(tablero, posXdeZ, posYdeZ);
     return abs(posXdeX - (posXdeZ)) + abs((posYdeX/2 - posYdeZ/2)); //dividimos entre 2 porque las columnas van de 2 en 2 por las comas
 }
+//TODO : queda pendiente hacer otros 3 tipos de heurísticas
+//TODO: reescribir la matriz para la próxima entrega (problema de comas que no influye en esta entrega pero que sí lo hará en la próxima)
