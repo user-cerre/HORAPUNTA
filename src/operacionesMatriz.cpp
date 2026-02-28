@@ -3,12 +3,12 @@
 vector<vector<char>> Visitados(filas, vector<char>(columnas, false));
 
 void mostrar(const vector<vector<char>>& tablero) {
-    for (const auto& fila : tablero) {
-        for (const auto& celda : fila) {
-            cout << celda;
+        for (const auto& fila : tablero) {
+            for (const auto& celda : fila) {
+                cout << celda << " ";
+            }
+            cout << endl;
         }
-        cout << endl;
-    }
 }
 
 void cargarTablero(vector<vector<char>> &tablero){
@@ -44,15 +44,17 @@ void cargarTablero(vector<vector<char>> &tablero){
             ifstream archivo(nombreArchivo);
             if (archivo.is_open()) {
                 string linea;
-                int j = 0;
-                while (getline(archivo, linea)) {   
                     int i = 0;
-                    while(i < linea.size()){
-                        tablero[j][i] = (linea[i]); 
+                    while (getline(archivo, linea)) { 
+                        int j = 0;  
+                        for(char c : linea){
+                            if(c != ','){
+                                tablero[i][j] = (c);
+                                j++;
+                            }
+                        }
                         i++;
                     }
-                    j++;
-                }
                 archivo.close();
                 opcionValida = true;
             } else {
@@ -69,7 +71,7 @@ void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY){
     bool encontrado = false;
     for (int i = 0; i < filas && !encontrado; i++)
     {
-        for (int j = 0; j < columnas; j+=2)
+        for (int j = 0; j < columnas; j++) // Antes era +2 pero como hemos quitado comas, pues +1
         {
 
             if(tablero[i][j] == 'X'){
@@ -83,9 +85,9 @@ void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY){
 }
 void encontrarZ(vector<vector<char>> &tablero, int &posX, int &posY){
     bool encontrado = false;
-    for (int i = 0; i < filas && !encontrado; i++)
+    for (int i = 0; i < filas && !encontrado; i++) 
     {
-        for (int j = 0; j < columnas; j+=2)
+        for (int j = 0; j < columnas; j++) // Antes era +2 pero como hemos quitado comas, pues +1
         {
             if(tablero[i][j] == 'Z'){
                 posX = i;
@@ -109,9 +111,9 @@ void delimitarVehiculo(vector<vector<char>> tablero, int x, int y, vector<pair<i
         pair<int,int> coord (x,y);
         V.push_back(coord);
         Visitados[x][y] = true;
-        delimitarVehiculo(tablero, x, y+2, V, vehiculo);
-        delimitarVehiculo(tablero, x+1, y, V, vehiculo); //sumo 2 al desplazarme a izq o dere para evitar las comas
-        delimitarVehiculo(tablero, x, y-2, V, vehiculo);
+        delimitarVehiculo(tablero, x, y+1, V, vehiculo);
+        delimitarVehiculo(tablero, x+1, y, V, vehiculo); //sumo 2 al desplazarme a izq o dere para evitar las comas // OJO, ya
+        delimitarVehiculo(tablero, x, y-1, V, vehiculo);
         delimitarVehiculo(tablero, x-1, y, V, vehiculo);
         Visitados[x][y] = false;
     }
@@ -213,22 +215,22 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
     }
     break;
 
-    case 'r':
+    case 'r': // Estoy cambiando esto para adaptar el movimiento a la matriz sin comas
     V.clear();
     if(dentroLimites(posX, posY-1)){
         vehiculo = tablero[posX][posY-2];
         delimitarVehiculo(tablero, posX, posY-2, V, vehiculo);
         if(V.size() == 1){
-            tablero[posX][posY-2] = 'X';
+            tablero[posX][posY-1] = 'X';
             tablero[posX][posY] = vehiculo;
             movimientoValido = true;
         } else if(puedeMoverse(posX, V, movimiento)){
             if(V.size() == 2){
-                tablero[posX][posY-4] = 'X';
+                tablero[posX][posY-2] = 'X';
                 tablero[posX][posY] = vehiculo;
                 movimientoValido = true;
             } else{
-                tablero[posX][posY-6] = 'X';
+                tablero[posX][posY-3] = 'X';
                 tablero[posX][posY] = vehiculo;
                 movimientoValido = true;
             }
@@ -250,16 +252,16 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
         vehiculo = tablero[posX][posY+2];
         delimitarVehiculo(tablero, posX, posY+2, V, vehiculo);
         if(V.size() == 1){
-            tablero[posX][posY+2] = 'X';
+            tablero[posX][posY+1] = 'X';
             tablero[posX][posY] = vehiculo;
             movimientoValido = true;
         } else if(puedeMoverse(posX, V, movimiento)){
             if(V.size() == 2){
-                tablero[posX][posY+4] = 'X';
+                tablero[posX][posY+2] = 'X';
                 tablero[posX][posY] = vehiculo;
                 movimientoValido = true;
             } else{
-                tablero[posX][posY+6] = 'X';
+                tablero[posX][posY+3] = 'X';
                 tablero[posX][posY] = vehiculo;
                 movimientoValido = true;
             }
@@ -286,7 +288,7 @@ int calcularHeuristica(vector<vector<char>> &tablero){
     int distanciaManhattan;
     encontrarX(tablero, posXdeX, posYdeX);
     encontrarZ(tablero, posXdeZ, posYdeZ);
-    return abs(posXdeX - (posXdeZ)) + abs((posYdeX/2 - posYdeZ/2)); //dividimos entre 2 porque las columnas van de 2 en 2 por las comas
+    return abs(posXdeX - (posXdeZ)) + abs((posYdeX - posYdeZ)); //dividimos entre 2 porque las columnas van de 2 en 2 por las comas
 }
 //TODO : queda pendiente hacer otros 3 tipos de heurísticas
 //TODO: reescribir la matriz para la próxima entrega (problema de comas que no influye en esta entrega pero que sí lo hará en la próxima)
