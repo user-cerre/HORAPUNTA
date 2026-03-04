@@ -283,12 +283,32 @@ void movimiento(vector<vector<char>> &tablero, char movimiento){
     }
 }
 
-int calcularHeuristica(vector<vector<char>> &tablero){
+int calcularHeuristicaManhattan(vector<vector<char>> &tablero){
     int posXdeX, posYdeX, posXdeZ, posYdeZ;
     int distanciaManhattan;
     encontrarX(tablero, posXdeX, posYdeX);
     encontrarZ(tablero, posXdeZ, posYdeZ);
     return abs(posXdeX - (posXdeZ)) + abs((posYdeX - posYdeZ)); //dividimos entre 2 porque las columnas van de 2 en 2 por las comas
 }
+int calcularEscaladaSimple(vector<vector<char>> &tablero){
+
+}
+
+int calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero){
+
+}
+
+int calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero){
+
+}
+
+int calcularAlgoritmoEstrella(vector<vector<char>> &tablero){
+
+}
+
+int calcularAlgoritmoAndOr(vector<vector<char>> &tablero){
+
+}
+
 //TODO : queda pendiente hacer otros 3 tipos de heurísticas
 //TODO: reescribir la matriz para la próxima entrega (problema de comas que no influye en esta entrega pero que sí lo hará en la próxima)

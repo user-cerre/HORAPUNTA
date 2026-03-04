@@ -32,7 +32,16 @@ bool puedeMoverse(vector<vector<char>> tablero, int coordenadaDeX, vector<pair<i
 
 void movimiento(vector<vector<char>> &tablero, char movimiento);
 
-int calcularHeuristica(vector<vector<char>> &tablero);
+int calcularHeuristicaManhattan(vector<vector<char>> &tablero);
 
+int calcularEscaladaSimple(vector<vector<char>> &tablero);
+
+int calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero);
+
+int calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero);
+
+int calcularAlgoritmoEstrella(vector<vector<char>> &tablero);
+
+int calcularAlgoritmoAndOr(vector<vector<char>> &tablero);
 
 #endif
