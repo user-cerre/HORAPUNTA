@@ -20,29 +20,7 @@ int main(){
     mostrar(tablero);
     cout << endl;
 
-    cout << "Inicio de los movimientos de prueba: " << endl;
-
-    aux = tablero;
-    movimiento(aux, 'u');
-    mostrar(aux);
-    cout <<"Heurística mediante distancia Manhattan: " << calcularHeuristicaManhattan(aux) << endl;
-    cout << endl;
-    aux = tablero;
-    movimiento(aux, 'd');
-    mostrar(aux);
-    cout <<"Heurística mediante distancia Manhattan: " << calcularHeuristicaManhattan(aux) << endl;
-    cout << endl;
-    aux = tablero;
-    movimiento(aux, 'r');
-    mostrar(aux);
-    cout <<"Heurística mediante distancia Manhattan: " << calcularHeuristicaManhattan(aux) << endl;
-    cout << endl;
-    aux = tablero;
-    movimiento(aux, 'l');
-    mostrar(aux); 
-    cout <<"Heurística mediante distancia Manhattan: " << calcularHeuristicaManhattan(aux) << endl;
-    cout << endl;
-    cout << "Fin de los movimientos de prueba" << endl;
+    calcularEscaladaSimple(tablero);
 
     return 0; 
 }

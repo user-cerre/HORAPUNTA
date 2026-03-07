@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <limits.h>
 #include <map>
 #include <algorithm>
 #include <fstream>
@@ -26,22 +27,27 @@ void encontrarZ(vector<vector<char>> &tablero, int &posX, int &posY);
 
 bool dentroLimites(int x, int y);
 
-void delimitarVehiculo(vector<vector<char>> tablero, int x, int y, vector<pair<int,int>> V);
+void delimitarVehiculo(const vector<vector<char>> &tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo,
+					   vector<vector<char>> &visitados);
 
-bool puedeMoverse(vector<vector<char>> tablero, int coordenadaDeX, vector<pair<int,int>> V);
+bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov);
 
-void movimiento(vector<vector<char>> &tablero, char movimiento);
+char moverVehiculo(vector<vector<char>> &tablero, char movimiento);
 
-int calcularHeuristicaManhattan(vector<vector<char>> &tablero);
+int calcularHeuristicaXAZ(vector<vector<char>> &tablero);
 
-int calcularEscaladaSimple(vector<vector<char>> &tablero);
+int distanciaZABorde(vector<vector<char>> &tablero);
 
-int calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero);
+int calcularHeuristicaTablero(vector<vector<char>> &tablero, char vehiculo);
 
-int calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero);
+vector<char> calcularEscaladaSimple(vector<vector<char>> &tablero);
 
-int calcularAlgoritmoEstrella(vector<vector<char>> &tablero);
+vector<char> calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero);
 
-int calcularAlgoritmoAndOr(vector<vector<char>> &tablero);
+vector<char> calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero);
+
+vector<char> calcularAlgoritmoEstrella(vector<vector<char>> &tablero);
+
+vector<char> calcularAlgoritmoAndOr(vector<vector<char>> &tablero);
 
 #endif

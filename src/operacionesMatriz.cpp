@@ -143,7 +143,6 @@ void delimitarVehiculo(vector<vector<char>> tablero, int x, int y, vector<pair<i
         Visitados[x][y] = false;
     }
 }
-// Revisión
 bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov)
 {
     bool puede = true;
@@ -174,7 +173,7 @@ bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov)
     return puede;
 }
 
-void movimiento(vector<vector<char>> &tablero, char movimiento)
+char moverVehiculo(vector<vector<char>> &tablero, char movimiento)
 {
     int posX, posY;
     encontrarX(tablero, posX, posY);
@@ -218,11 +217,13 @@ void movimiento(vector<vector<char>> &tablero, char movimiento)
             {
                 cout << "No se ha podido mover el vehículo " << vehiculo << " hacia arriba" << endl;
                 cout << endl;
+                vehiculo = ' ';
             }
         }
         else
         {
             cout << "No se ha podido mover el vehículo hacia arriba porque se encuentra en el límite del tablero" << endl;
+            vehiculo = ' ';
         }
         break;
     case 'd':
@@ -259,12 +260,14 @@ void movimiento(vector<vector<char>> &tablero, char movimiento)
             else
             {
                 cout << "No se ha podido mover el vehículo " << vehiculo << " hacia abajo" << endl;
+                vehiculo = ' ';
             }
         }
         else
         {
             cout << "No se ha podido mover el vehículo hacia abajo porque se encuentra en el límite del tablero" << endl;
             cout << endl;
+            vehiculo = ' ';
         }
         break;
 
@@ -272,8 +275,8 @@ void movimiento(vector<vector<char>> &tablero, char movimiento)
         V.clear();
         if (dentroLimites(posX, posY - 1))
         {
-            vehiculo = tablero[posX][posY - 2];
-            delimitarVehiculo(tablero, posX, posY - 2, V, vehiculo);
+            vehiculo = tablero[posX][posY - 1];
+            delimitarVehiculo(tablero, posX, posY - 1, V, vehiculo);
             if (V.size() == 1)
             {
                 tablero[posX][posY - 1] = 'X';
@@ -303,11 +306,13 @@ void movimiento(vector<vector<char>> &tablero, char movimiento)
             {
                 cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la derecha" << endl;
                 cout << endl;
+                vehiculo = ' ';
             }
         }
         else
         {
             cout << "No se ha podido mover el vehículo hacia la derecha porque se encuentra en el límite del tablero" << endl;
+            vehiculo = ' ';
         }
         break;
 
@@ -315,8 +320,8 @@ void movimiento(vector<vector<char>> &tablero, char movimiento)
         V.clear();
         if (dentroLimites(posX, posY + 1))
         {
-            vehiculo = tablero[posX][posY + 2];
-            delimitarVehiculo(tablero, posX, posY + 2, V, vehiculo);
+            vehiculo = tablero[posX][posY + 1];
+            delimitarVehiculo(tablero, posX, posY + 1, V, vehiculo);
             if (V.size() == 1)
             {
                 tablero[posX][posY + 1] = 'X';
@@ -346,11 +351,13 @@ void movimiento(vector<vector<char>> &tablero, char movimiento)
             {
                 cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la izquierda" << endl;
                 cout << endl;
+                vehiculo = ' ';
             }
         }
         else
         {
             cout << "No se ha podido mover el vehículo hacia la izquierda porque se encuentra en el límite del tablero" << endl;
+            vehiculo = ' ';
         }
         break;
 
@@ -358,63 +365,147 @@ void movimiento(vector<vector<char>> &tablero, char movimiento)
         cout << "Movimiento no válido, escoja de nuevo" << endl;
         break;
     }
+
+    return vehiculo;
 }
 
-int calcularHeuristicaManhattan(vector<vector<char>> &tablero)
+int calcularHeuristicaXAZ(vector<vector<char>> &tablero)
 {
     int posXdeX, posYdeX, posXdeZ, posYdeZ;
     int distanciaManhattan;
     encontrarX(tablero, posXdeX, posYdeX);
     encontrarZ(tablero, posXdeZ, posYdeZ);
-    return abs(posXdeX - (posXdeZ)) + abs((posYdeX - posYdeZ)); // dividimos entre 2 porque las columnas van de 2 en 2 por las comas
+    return abs(posXdeX - (posXdeZ)) + abs((posYdeX - posYdeZ));
 }
-int calcularEscaladaSimple(vector<vector<char>> &tablero)
+
+int distanciaZABorde(vector<vector<char>> &tablero)
 {
-    if (calcularHeuristicaManhattan(tablero) == 0)
+    int posXdeZ, posYdeZ;
+    encontrarZ(tablero, posXdeZ, posYdeZ);
+    int distancia = min(posXdeZ, posYdeZ);
+    if (distancia < 3)
     {
-        return 0;
+        return distancia;
     }
-    else
-    {
-        int mejorHeuristica = calcularHeuristicaManhattan(tablero);
-        vector<char> movimientos = {'u', 'd', 'r', 'l'};
-        for (char mov : movimientos)
+    return 5 - distancia;
+}
+int distanciaXABordeDeZ(vector<vector<char>> &tablero)
+{
+    int posXdeZ, posYdeZ;
+    encontrarZ(tablero, posXdeZ, posYdeZ);
+    int posXdeX, posYdeX;
+    encontrarX(tablero, posXdeX, posYdeX);
+    if(posXdeZ == posXdeX){
+        int distancia = posXdeX;
+        if (distancia < 3)
         {
-            vector<vector<char>> tableroCopia = tablero;
-            movimiento(tableroCopia, mov);
-            int heuristica = calcularHeuristicaManhattan(tableroCopia);
-            if (heuristica < mejorHeuristica)
+            return distancia;
+        }
+        return 5 - distancia;
+    } else if(posYdeZ == posYdeX){
+        int distancia = posYdeX;
+        if (distancia < 3)
+        {
+            return distancia;
+        }
+        return 5 - distancia;
+    }else{
+        
+    }
+}
+
+// int calcularDistancia(const vector<vector<char>> &tablero) {
+//     int posX, posY;
+//     encontrarX(tablero, posX, posY);
+//     int distanciaMinima = INT_MAX;
+
+//     // Calcular distancia al borde más cercano
+//     for (int i = 0; i < filas; i++) {
+//         for (int j = 0; j < columnas; j++) {
+//             if (tablero[i][j] == 'Z') {
+//                 int distancia = min({posX, filas - 1 - posX, posY, columnas - 1 - posY});
+//                 distanciaMinima = min(distanciaMinima, distancia);
+//             }
+//         }
+//     }
+//     return distanciaMinima;
+// }
+
+int calcularHeuristicaTablero(vector<vector<char>> &tablero, char vehiculo)
+{
+    if( vehiculo == ' '){
+        return INT_MAX;
+    }
+    int heurZ = calcularHeuristicaXAZ(tablero);
+    int heurBordeZ = distanciaZABorde(tablero);
+    int heurBordeX = distanciaXABordeDeZ(tablero);
+    return heurZ + heurBordeZ+ heurBordeX;
+}
+
+vector<char> calcularEscaladaSimple(vector<vector<char>> &tablero)
+{
+    vector<char> solucion;
+    int heuristicaActual;
+    char vehiculo = '?';
+    while(calcularHeuristicaTablero(tablero, vehiculo) != 1 ){ 
+        heuristicaActual = calcularHeuristicaTablero(tablero, vehiculo);
+        for (int i = 0; i < 4; i++)
+        {
+            vector<vector<char>> tableroTemp = tablero;
+            char mov;
+            switch (i)
             {
-                return heuristica;
+            case 0:
+                mov = 'u';
+                break;
+            case 1:
+                mov = 'd';
+                break;
+            case 2:
+                mov = 'l';
+                break;
+            case 3:
+                mov = 'r';
+                break;
+            }
+            vehiculo = moverVehiculo(tableroTemp, mov);
+            if (calcularHeuristicaTablero(tableroTemp, vehiculo) <= heuristicaActual)
+            {
+                tablero = tableroTemp;
+                solucion.push_back(vehiculo);
+                // mostrar(tablero);
+                // cout << "Movimiento válido: " << vehiculo << endl;
+                // cout << "Heurística actual: " << calcularHeuristicaTablero(tablero, vehiculo) << endl;
             }
         }
-        return mejorHeuristica;
     }
+    
 }
 
-int calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero)
+vector<char> calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero)
 {
+    vector<char> solucion;
     // TODO: Implementar cálculo de escalada de máxima pendiente
-    return 0;
+    return solucion;
 }
 
-int calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero)
+vector<char> calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero)
 {
+    vector<char> solucion;
     // TODO: Implementar cálculo de escalada simple estocástica
-    return 0;
+    return solucion;
 }
 
-int calcularAlgoritmoEstrella(vector<vector<char>> &tablero)
+vector<char> calcularAlgoritmoEstrella(vector<vector<char>> &tablero)
 {
+    vector<char> solucion;
     // TODO: Implementar algoritmo A*
-    return 0;
+    return solucion;
 }
 
-int calcularAlgoritmoAndOr(vector<vector<char>> &tablero)
+vector<char> calcularAlgoritmoAndOr(vector<vector<char>> &tablero)
 {
+    vector<char> solucion;
     // TODO: Implementar algoritmo AND-OR
-    return 0;
+    return solucion;
 }
-
-// TODO : queda pendiente hacer otros 3 tipos de heurísticas
-// TODO: reescribir la matriz para la próxima entrega (problema de comas que no influye en esta entrega pero que sí lo hará en la próxima)
