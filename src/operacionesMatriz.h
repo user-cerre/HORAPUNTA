@@ -1,53 +1,57 @@
-#include <iostream>
-#include <vector>
-#include <limits.h>
-#include <map>
-#include <algorithm>
-#include <fstream>
-#include <filesystem>
-
-
-using namespace std;
-using namespace filesystem;
-namespace fs = std::filesystem;
-
 #ifndef OPERACIONESMATRIZ_H
 #define OPERACIONESMATRIZ_H
 
-int const filas = 6; //variables globales
-int const columnas = 6;  //variables globales son 12 columnas porque hay que tener en cuenta también las posiciones de las comas.
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <fstream>
+#include <filesystem>
 
-void mostrar(const vector<vector<char>> &tablero);
+using namespace std;
+namespace fs = std::filesystem;
 
-void cargarTablero(vector<vector<char>> &tablero);
+#include "Tablero.h"
 
-void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY);
+// 2. IMPORTANTE: Traer las constantes globales
+extern const int filas;
+extern const int columnas;
 
-void encontrarZ(vector<vector<char>> &tablero, int &posX, int &posY);
+// 3. Corregir la matriz global (debe ser bool para coincidir con tu lógica)
+extern vector<vector<bool>> Visitados; 
+
+// A partir de aquí, tus funciones ya no deberían marcar error en 'Tablero'
+void mostrar(Tablero &tablero);
+
+void cargarTablero(Tablero &tablero);
+
+void encontrarX(Tablero &tablero, int &posX, int &posY);
+
+void encontrarZ(Tablero &tablero, int &posX, int &posY);
 
 bool dentroLimites(int x, int y);
 
-void delimitarVehiculo(const vector<vector<char>> &tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo,
-					   vector<vector<char>> &visitados);
+void delimitarVehiculo(Tablero &tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo,
+					   vector<vector<bool>> &visitados);
 
 bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov);
 
-char moverVehiculo(vector<vector<char>> &tablero, char movimiento);
+char moverVehiculo(Tablero &tablero, char movimiento);
 
-int calcularHeuristicaXAZ(vector<vector<char>> &tablero);
+int calcularHeuristicaXAZ(Tablero &tablero);
 
-int distanciaZABorde(vector<vector<char>> &tablero);
+int distanciaZABorde(Tablero &tablero);
 
-int calcularHeuristicaTablero(vector<vector<char>> &tablero, char vehiculo);
+int calcularHeuristicaTablero(Tablero &tablero, char vehiculo);
 
-vector<char> calcularEscaladaSimple(vector<vector<char>> &tablero);
+vector<char> calcularEscaladaSimple(Tablero &tablero);
 
-vector<char> calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero);
+vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero);
 
-vector<char> calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero);
+vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero);
 
-vector<char> calcularAlgoritmoEstrella(vector<vector<char>> &tablero);
+vector<char> calcularAlgoritmoEstrella(Tablero &tablero);
 
-vector<char> calcularAlgoritmoAndOr(vector<vector<char>> &tablero);
+vector<char> calcularAlgoritmoAndOr(Tablero &tablero);
 
 #endif

@@ -1,10 +1,14 @@
 #include "operacionesMatriz.h"
+#include "Tablero.h"
+#include <filesystem>
 
-vector<vector<char>> Visitados(filas, vector<char>(columnas, false));
+using namespace std::filesystem;
 
-void mostrar(const vector<vector<char>> &tablero)
+vector<vector<bool>> Visitados(filas, vector<bool>(columnas, false));
+
+void mostrar( Tablero &tablero)
 {
-    for (const auto &fila : tablero)
+    for (const auto &fila : tablero.getTablero())
     {
         for (const auto &celda : fila)
         {
@@ -14,12 +18,13 @@ void mostrar(const vector<vector<char>> &tablero)
     }
 }
 
-void cargarTablero(vector<vector<char>> &tablero)
+void cargarTablero(Tablero &tablero)
 {
     map<int, string> Tableros;
     vector<string> salaDeEspera; // Se utiliza para ordenar el nombre de los ficheros antes de ponerlo en el mapa
     string rutaSalidas = "../Salidas";
-    if (exists(rutaSalidas) && is_directory(rutaSalidas))
+    vector<vector<char>> tableroAux (filas, vector<char>(columnas));
+    if (filesystem::exists(rutaSalidas) && filesystem::is_directory(rutaSalidas))
     {
 
         for (directory_entry archivo : directory_iterator(rutaSalidas))
@@ -62,7 +67,7 @@ void cargarTablero(vector<vector<char>> &tablero)
                     {
                         if (c != ',')
                         {
-                            tablero[i][j] = (c);
+                            tableroAux[i][j] = (c);
                             j++;
                         }
                     }
@@ -70,6 +75,7 @@ void cargarTablero(vector<vector<char>> &tablero)
                 }
                 archivo.close();
                 opcionValida = true;
+                tablero.setTablero(tableroAux);
             }
             else
             {
@@ -84,7 +90,7 @@ void cargarTablero(vector<vector<char>> &tablero)
     }
 }
 
-void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY)
+void encontrarX(Tablero &tablero, int &posX, int &posY)
 {
     bool encontrado = false;
     for (int i = 0; i < filas && !encontrado; i++)
@@ -92,7 +98,7 @@ void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY)
         for (int j = 0; j < columnas; j++) // Antes era +2 pero como hemos quitado comas, pues +1
         {
 
-            if (tablero[i][j] == 'X')
+            if (tablero.getTablero()[i][j] == 'X')
             {
                 posX = i;
                 posY = j;
@@ -102,14 +108,14 @@ void encontrarX(vector<vector<char>> &tablero, int &posX, int &posY)
         }
     }
 }
-void encontrarZ(vector<vector<char>> &tablero, int &posX, int &posY)
+void encontrarZ(Tablero &tablero, int &posX, int &posY)
 {
     bool encontrado = false;
     for (int i = 0; i < filas && !encontrado; i++)
     {
         for (int j = 0; j < columnas; j++) // Antes era +2 pero como hemos quitado comas, pues +1
         {
-            if (tablero[i][j] == 'Z')
+            if (tablero.getTablero()[i][j] == 'Z')
             {
                 posX = i;
                 posY = j;
@@ -129,15 +135,15 @@ bool dentroLimites(int x, int y)
     return true;
 }
 
-void delimitarVehiculo(vector<vector<char>> tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo)
+void delimitarVehiculo(Tablero &tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo)
 {
-    if (dentroLimites(x, y) && tablero[x][y] == vehiculo && !Visitados[x][y])
+    if (dentroLimites(x, y) && tablero.getTablero()[x][y] == vehiculo && Visitados[x][y])
     {
         pair<int, int> coord(x, y);
         V.push_back(coord);
         Visitados[x][y] = true;
         delimitarVehiculo(tablero, x, y + 1, V, vehiculo);
-        delimitarVehiculo(tablero, x + 1, y, V, vehiculo); // sumo 2 al desplazarme a izq o dere para evitar las comas // OJO, ya
+        delimitarVehiculo(tablero, x + 1, y, V, vehiculo);
         delimitarVehiculo(tablero, x, y - 1, V, vehiculo);
         delimitarVehiculo(tablero, x - 1, y, V, vehiculo);
         Visitados[x][y] = false;
@@ -173,44 +179,46 @@ bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov)
     return puede;
 }
 
-char moverVehiculo(vector<vector<char>> &tablero, char movimiento)
+char moverVehiculo(Tablero &tablero, char movimiento)
 {
     int posX, posY;
     encontrarX(tablero, posX, posY);
     char vehiculo;
     bool movimientoValido = false;
     vector<pair<int, int>> V;
+    vector<vector<char>> tableroRef = tablero.getTablero();
     switch (movimiento)
     {
     case 'u':
         V.clear();
         if (dentroLimites(posX + 1, posY))
         {
-            vehiculo = tablero[posX + 1][posY];
+            vehiculo = tableroRef[posX + 1][posY];
             delimitarVehiculo(tablero, posX + 1, posY, V, vehiculo);
             if (V.size() == 1)
             {
-                tablero[posX + 1][posY] = 'X';
-                tablero[posX][posY] = vehiculo;
+                tableroRef[posX + 1][posY] = 'X';
+                tableroRef[posX][posY] = vehiculo;
                 movimientoValido = true;
             }
             else if (puedeMoverse(posY, V, movimiento))
             {
                 if (V.size() == 2)
                 {
-                    tablero[posX + 2][posY] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX + 2][posY] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
                 else
                 {
-                    tablero[posX + 3][posY] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX + 3][posY] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
             }
             if (movimientoValido)
             {
+                tablero.setTablero(tableroRef);// Actualizamos el tablero con los cambios realizados en tableroRef
                 cout << "Has movido el vehículo " << vehiculo << " hacia arriba" << endl;
             }
             else
@@ -230,31 +238,32 @@ char moverVehiculo(vector<vector<char>> &tablero, char movimiento)
         V.clear();
         if (dentroLimites(posX - 1, posY))
         {
-            vehiculo = tablero[posX - 1][posY];
+            vehiculo = tableroRef[posX - 1][posY];
             delimitarVehiculo(tablero, posX - 1, posY, V, vehiculo);
             if (V.size() == 1)
             {
-                tablero[posX - 1][posY] = 'X';
-                tablero[posX][posY] = vehiculo;
+                tableroRef[posX - 1][posY] = 'X';
+                tableroRef[posX][posY] = vehiculo;
                 movimientoValido = true;
             }
             else if (puedeMoverse(posY, V, movimiento))
             {
                 if (V.size() == 2)
                 {
-                    tablero[posX - 2][posY] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX - 2][posY] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
                 else
                 {
-                    tablero[posX - 3][posY] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX - 3][posY] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
             }
             if (movimientoValido)
             {
+                tablero.setTablero(tableroRef);// Actualizamos el tablero con los cambios realizados en tableroRef
                 cout << "Has movido el vehículo " << vehiculo << " hacia abajo" << endl;
             }
             else
@@ -275,31 +284,32 @@ char moverVehiculo(vector<vector<char>> &tablero, char movimiento)
         V.clear();
         if (dentroLimites(posX, posY - 1))
         {
-            vehiculo = tablero[posX][posY - 1];
+            vehiculo = tableroRef[posX][posY - 1];
             delimitarVehiculo(tablero, posX, posY - 1, V, vehiculo);
             if (V.size() == 1)
             {
-                tablero[posX][posY - 1] = 'X';
-                tablero[posX][posY] = vehiculo;
+                tableroRef[posX][posY - 1] = 'X';
+                tableroRef[posX][posY] = vehiculo;
                 movimientoValido = true;
             }
             else if (puedeMoverse(posX, V, movimiento))
             {
                 if (V.size() == 2)
                 {
-                    tablero[posX][posY - 2] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX][posY - 2] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
                 else
                 {
-                    tablero[posX][posY - 3] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX][posY - 3] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
             }
             if (movimientoValido)
             {
+                tablero.setTablero(tableroRef);// Actualizamos el tablero con los cambios realizados en tableroRef
                 cout << "Has movido el vehículo " << vehiculo << " hacia la derecha" << endl;
             }
             else
@@ -320,31 +330,32 @@ char moverVehiculo(vector<vector<char>> &tablero, char movimiento)
         V.clear();
         if (dentroLimites(posX, posY + 1))
         {
-            vehiculo = tablero[posX][posY + 1];
+            vehiculo = tableroRef[posX][posY + 1];
             delimitarVehiculo(tablero, posX, posY + 1, V, vehiculo);
             if (V.size() == 1)
             {
-                tablero[posX][posY + 1] = 'X';
-                tablero[posX][posY] = vehiculo;
+                tableroRef[posX][posY + 1] = 'X';
+                tableroRef[posX][posY] = vehiculo;
                 movimientoValido = true;
             }
             else if (puedeMoverse(posX, V, movimiento))
             {
                 if (V.size() == 2)
                 {
-                    tablero[posX][posY + 2] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX][posY + 2] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
                 else
                 {
-                    tablero[posX][posY + 3] = 'X';
-                    tablero[posX][posY] = vehiculo;
+                    tableroRef[posX][posY + 3] = 'X';
+                    tableroRef[posX][posY] = vehiculo;
                     movimientoValido = true;
                 }
             }
             if (movimientoValido)
             {
+                tablero.setTablero(tableroRef);// Actualizamos el tablero con los cambios realizados en tableroRef
                 cout << "Has movido el vehículo " << vehiculo << " hacia la izquierda" << endl;
             }
             else
@@ -369,7 +380,7 @@ char moverVehiculo(vector<vector<char>> &tablero, char movimiento)
     return vehiculo;
 }
 
-int calcularHeuristicaXAZ(vector<vector<char>> &tablero)
+int calcularHeuristicaXAZ(Tablero &tablero)
 {
     int posXdeX, posYdeX, posXdeZ, posYdeZ;
     int distanciaManhattan;
@@ -378,7 +389,7 @@ int calcularHeuristicaXAZ(vector<vector<char>> &tablero)
     return abs(posXdeX - (posXdeZ)) + abs((posYdeX - posYdeZ));
 }
 
-int distanciaZABorde(vector<vector<char>> &tablero)
+int distanciaZABorde(Tablero &tablero)
 {
     int posXdeZ, posYdeZ;
     encontrarZ(tablero, posXdeZ, posYdeZ);
@@ -389,7 +400,7 @@ int distanciaZABorde(vector<vector<char>> &tablero)
     }
     return 5 - distancia;
 }
-int distanciaXABordeDeZ(vector<vector<char>> &tablero)
+int distanciaXABordeDeZ(Tablero &tablero)
 {
     int posXdeZ, posYdeZ;
     encontrarZ(tablero, posXdeZ, posYdeZ);
@@ -407,10 +418,25 @@ int distanciaXABordeDeZ(vector<vector<char>> &tablero)
         if (distancia < 3)
         {
             return distancia;
+        }else{
+            return 5 - distancia;
         }
-        return 5 - distancia;
     }else{
-        
+        if(posXdeZ < posYdeZ){//TODO revisar esta parte
+            int distancia = posXdeX;
+            if (distancia < 3 && posXdeZ < 3)
+            {
+                return distancia;
+            }
+            return 5 - distancia;
+        } else{
+            int distancia = posYdeX;
+            if (distancia < 3 && posYdeZ < 3)
+            {
+                return distancia;
+            }
+            return 5 - distancia;
+        }
     }
 }
 
@@ -418,7 +444,6 @@ int distanciaXABordeDeZ(vector<vector<char>> &tablero)
 //     int posX, posY;
 //     encontrarX(tablero, posX, posY);
 //     int distanciaMinima = INT_MAX;
-
 //     // Calcular distancia al borde más cercano
 //     for (int i = 0; i < filas; i++) {
 //         for (int j = 0; j < columnas; j++) {
@@ -431,7 +456,7 @@ int distanciaXABordeDeZ(vector<vector<char>> &tablero)
 //     return distanciaMinima;
 // }
 
-int calcularHeuristicaTablero(vector<vector<char>> &tablero, char vehiculo)
+int calcularHeuristicaTablero(Tablero &tablero, char vehiculo)
 {
     if( vehiculo == ' '){
         return INT_MAX;
@@ -442,7 +467,7 @@ int calcularHeuristicaTablero(vector<vector<char>> &tablero, char vehiculo)
     return heurZ + heurBordeZ+ heurBordeX;
 }
 
-vector<char> calcularEscaladaSimple(vector<vector<char>> &tablero)
+vector<char> calcularEscaladaSimple(Tablero &tablero)
 {
     vector<char> solucion;
     int heuristicaActual;
@@ -451,7 +476,7 @@ vector<char> calcularEscaladaSimple(vector<vector<char>> &tablero)
         heuristicaActual = calcularHeuristicaTablero(tablero, vehiculo);
         for (int i = 0; i < 4; i++)
         {
-            vector<vector<char>> tableroTemp = tablero;
+            vector<vector<char>> tableroTemp = tablero.getTablero();
             char mov;
             switch (i)
             {
@@ -468,10 +493,10 @@ vector<char> calcularEscaladaSimple(vector<vector<char>> &tablero)
                 mov = 'r';
                 break;
             }
-            vehiculo = moverVehiculo(tableroTemp, mov);
-            if (calcularHeuristicaTablero(tableroTemp, vehiculo) <= heuristicaActual)
+            vehiculo = moverVehiculo(tablero, mov);
+            if (calcularHeuristicaTablero(tablero, vehiculo) <= heuristicaActual)
             {
-                tablero = tableroTemp;
+                tablero.setTablero(tableroTemp);
                 solucion.push_back(vehiculo);
                 // mostrar(tablero);
                 // cout << "Movimiento válido: " << vehiculo << endl;
@@ -479,31 +504,33 @@ vector<char> calcularEscaladaSimple(vector<vector<char>> &tablero)
             }
         }
     }
+    tablero.agregarSolucion(solucion);
+    return solucion;
     
 }
 
-vector<char> calcularEscaladaMaximaPendiente(vector<vector<char>> &tablero)
+vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero)
 {
     vector<char> solucion;
     // TODO: Implementar cálculo de escalada de máxima pendiente
     return solucion;
 }
 
-vector<char> calcularEscaladaSimpleEstocastica(vector<vector<char>> &tablero)
+vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
 {
     vector<char> solucion;
     // TODO: Implementar cálculo de escalada simple estocástica
     return solucion;
 }
 
-vector<char> calcularAlgoritmoEstrella(vector<vector<char>> &tablero)
+vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
 {
     vector<char> solucion;
     // TODO: Implementar algoritmo A*
     return solucion;
 }
 
-vector<char> calcularAlgoritmoAndOr(vector<vector<char>> &tablero)
+vector<char> calcularAlgoritmoAndOr(Tablero &tablero)
 {
     vector<char> solucion;
     // TODO: Implementar algoritmo AND-OR
