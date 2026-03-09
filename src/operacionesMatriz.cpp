@@ -137,7 +137,7 @@ bool dentroLimites(int x, int y)
 
 void delimitarVehiculo(Tablero &tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo)
 {
-    if (dentroLimites(x, y) && tablero.getTablero()[x][y] == vehiculo && Visitados[x][y])
+    if (dentroLimites(x, y) && tablero.getTablero()[x][y] == vehiculo && !Visitados[x][y])
     {
         pair<int, int> coord(x, y);
         V.push_back(coord);
@@ -195,7 +195,11 @@ char moverVehiculo(Tablero &tablero, char movimiento)
         {
             vehiculo = tableroRef[posX + 1][posY];
             delimitarVehiculo(tablero, posX + 1, posY, V, vehiculo);
-            if (V.size() == 1)
+            if (V.empty())
+            {
+                movimientoValido = false;
+            }
+            else if (V.size() == 1)
             {
                 tableroRef[posX + 1][posY] = 'X';
                 tableroRef[posX][posY] = vehiculo;
@@ -205,15 +209,21 @@ char moverVehiculo(Tablero &tablero, char movimiento)
             {
                 if (V.size() == 2)
                 {
-                    tableroRef[posX + 2][posY] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX + 2, posY))
+                    {
+                        tableroRef[posX + 2][posY] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
                 else
                 {
-                    tableroRef[posX + 3][posY] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX + 3, posY))
+                    {
+                        tableroRef[posX + 3][posY] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
             }
             if (movimientoValido)
@@ -240,7 +250,11 @@ char moverVehiculo(Tablero &tablero, char movimiento)
         {
             vehiculo = tableroRef[posX - 1][posY];
             delimitarVehiculo(tablero, posX - 1, posY, V, vehiculo);
-            if (V.size() == 1)
+            if (V.empty())
+            {
+                movimientoValido = false;
+            }
+            else if (V.size() == 1)
             {
                 tableroRef[posX - 1][posY] = 'X';
                 tableroRef[posX][posY] = vehiculo;
@@ -250,15 +264,21 @@ char moverVehiculo(Tablero &tablero, char movimiento)
             {
                 if (V.size() == 2)
                 {
-                    tableroRef[posX - 2][posY] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX - 2, posY))
+                    {
+                        tableroRef[posX - 2][posY] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
                 else
                 {
-                    tableroRef[posX - 3][posY] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX - 3, posY))
+                    {
+                        tableroRef[posX - 3][posY] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
             }
             if (movimientoValido)
@@ -286,7 +306,11 @@ char moverVehiculo(Tablero &tablero, char movimiento)
         {
             vehiculo = tableroRef[posX][posY - 1];
             delimitarVehiculo(tablero, posX, posY - 1, V, vehiculo);
-            if (V.size() == 1)
+            if (V.empty())
+            {
+                movimientoValido = false;
+            }
+            else if (V.size() == 1)
             {
                 tableroRef[posX][posY - 1] = 'X';
                 tableroRef[posX][posY] = vehiculo;
@@ -296,15 +320,21 @@ char moverVehiculo(Tablero &tablero, char movimiento)
             {
                 if (V.size() == 2)
                 {
-                    tableroRef[posX][posY - 2] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX, posY - 2))
+                    {
+                        tableroRef[posX][posY - 2] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
                 else
                 {
-                    tableroRef[posX][posY - 3] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX, posY - 3))
+                    {
+                        tableroRef[posX][posY - 3] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
             }
             if (movimientoValido)
@@ -332,7 +362,11 @@ char moverVehiculo(Tablero &tablero, char movimiento)
         {
             vehiculo = tableroRef[posX][posY + 1];
             delimitarVehiculo(tablero, posX, posY + 1, V, vehiculo);
-            if (V.size() == 1)
+            if (V.empty())
+            {
+                movimientoValido = false;
+            }
+            else if (V.size() == 1)
             {
                 tableroRef[posX][posY + 1] = 'X';
                 tableroRef[posX][posY] = vehiculo;
@@ -342,15 +376,21 @@ char moverVehiculo(Tablero &tablero, char movimiento)
             {
                 if (V.size() == 2)
                 {
-                    tableroRef[posX][posY + 2] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX, posY + 2))
+                    {
+                        tableroRef[posX][posY + 2] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
                 else
                 {
-                    tableroRef[posX][posY + 3] = 'X';
-                    tableroRef[posX][posY] = vehiculo;
-                    movimientoValido = true;
+                    if (dentroLimites(posX, posY + 3))
+                    {
+                        tableroRef[posX][posY + 3] = 'X';
+                        tableroRef[posX][posY] = vehiculo;
+                        movimientoValido = true;
+                    }
                 }
             }
             if (movimientoValido)
@@ -464,7 +504,7 @@ int calcularHeuristicaTablero(Tablero &tablero, char vehiculo)
     int heurZ = calcularHeuristicaXAZ(tablero);
     int heurBordeZ = distanciaZABorde(tablero);
     int heurBordeX = distanciaXABordeDeZ(tablero);
-    return heurZ + heurBordeZ+ heurBordeX;
+    return heurZ + heurBordeZ /* + heurBordeX*/;
 }
 
 vector<char> calcularEscaladaSimple(Tablero &tablero)
