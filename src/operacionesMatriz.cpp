@@ -416,7 +416,6 @@ char moverVehiculo(Tablero &tablero, char movimiento)
         cout << "Movimiento no válido, escoja de nuevo" << endl;
         break;
     }
-
     return vehiculo;
 }
 
@@ -534,6 +533,9 @@ vector<char> calcularEscaladaSimple(Tablero &tablero)
                 break;
             }
             vehiculo = moverVehiculo(tablero, mov);
+            mostrar(tablero);
+             cout << "Heurística actual: " << calcularHeuristicaTablero(tablero, vehiculo) << endl;
+             cout << endl;
             if (calcularHeuristicaTablero(tablero, vehiculo) <= heuristicaActual)
             {
                 tablero.setTablero(tableroTemp);
