@@ -193,13 +193,13 @@ DireccionMovimiento obtenerDatosMovimiento(char movimiento)
     switch (movimiento)
     {
     case 'u':
-        return {1, 0, "arriba"};
+        return {-1, 0, "arriba"};
     case 'd':
-        return {-1, 0, "abajo"};
+        return {1, 0, "abajo"};
     case 'r':
-        return {0, -1, "derecha"};
+        return {0, 1, "derecha"};
     case 'l':
-        return {0, 1, "izquierda"};
+        return {0, -1, "izquierda"};
     default:
         return {0, 0, "inválida"};
     }
@@ -521,7 +521,85 @@ vector<char> calcularEscaladaSimple(Tablero &tablero)
 vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero)
 {
     vector<char> solucion;
-    // TODO: Implementar cálculo de escalada de máxima pendiente
+    int iterMax = 200;
+    int iter = 0;
+    while(!esObjetivo(tablero) && iter < iterMax){
+        int heuristicaActual = calcularHeuristicaTablero(tablero, '?');
+        char vehiculo = '?';
+        char mejorVehiculo = '?';
+        char mejorMovimiento = '?';
+        for (int i = 0; i < 4; i++)
+        {
+            vector<vector<char>> tableroTemp = tablero.getTablero();
+            char mov;
+            switch (i)
+            {
+            case 0:
+                mov = 'u';
+                break;
+            case 1:
+                mov = 'd';
+                break;
+            case 2:
+                mov = 'l';
+                break;
+            case 3:
+                mov = 'r';
+                break;
+            }
+            vehiculo = moverVehiculo(tablero, mov, false);
+            if (vehiculo == ' ')
+            {
+                tablero.setTablero(tableroTemp);
+                continue;
+            }
+            int heuristicaNueva = calcularHeuristicaTablero(tablero, vehiculo);
+            if (heuristicaNueva <= heuristicaActual)  // Aceptar mejoras o iguales
+            {
+                heuristicaActual = heuristicaNueva;
+                mejorVehiculo = vehiculo;
+                mejorMovimiento = mov;
+            }
+            tablero.setTablero(tableroTemp);
+        }
+        if (mejorVehiculo != '?')
+        {
+            moverVehiculo(tablero, mejorMovimiento, false);
+            solucion.push_back(mejorVehiculo);
+            cout << "Has movido el vehículo " << mejorVehiculo << endl;
+            mostrar(tablero);
+            cout << "Heurística actual: " << heuristicaActual << endl;
+            cout << endl;
+            if (heuristicaActual == 0)
+            {
+                break;
+            }
+        }
+        else
+        {
+            break; // No se encontró un movimiento mejor
+        }
+        iter++;
+    }
+    cout << "Pasos realizados: ";
+    if (solucion.empty())
+    {
+        cout << "(sin pasos)";
+    }
+    else
+    {
+        for (int i = 0; i < solucion.size(); i++)
+        {
+            cout << solucion[i];
+            if (i + 1 < solucion.size())
+            {
+                cout << ", ";
+            }
+        }
+    }
+    cout << endl;
+
+    tablero.agregarSolucion(solucion);
     return solucion;
 }
 
@@ -534,9 +612,124 @@ vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
 
 vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
 {
+    // Estructura para un nodo en la búsqueda A*
+    struct Nodo {
+        Tablero estado;
+        vector<char> camino;
+        int g;  // costo desde el inicio (número de pasos)
+        int h;  // heurística estimada al objetivo
+        
+        int f() const { return g + h; }
+        
+        bool operator>(const Nodo& otro) const {
+            return f() > otro.f();  // Para min-heap
+        }
+    };
+    
+    // Cola de prioridad ordenada por f(n)
+    priority_queue<Nodo, vector<Nodo>, greater<Nodo>> abiertos;
+    
+    // Conjunto de estados visitados (usando string como representación)
+    set<string> cerrados;
+    
+    // Nodo inicial
+    Nodo inicial{tablero, {}, 0, calcularHeuristicaTablero(tablero, '?')};
+    
+    abiertos.push(inicial);
+    
+    int iterMax = 10000;
+    int iter = 0;
+    
+    while (!abiertos.empty() && iter < iterMax)
+    {
+        Nodo actual = abiertos.top();
+        abiertos.pop();
+        
+        cout << "---A* Iteración " << (iter + 1) << " (f=" << actual.f() 
+             << ", g=" << actual.g << ", h=" << actual.h << ")---" << endl;
+        mostrar(actual.estado);
+        cout << endl;
+        
+        // Verificar si es objetivo
+        if (esObjetivo(actual.estado))
+        {
+            cout << "¡Objetivo encontrado!" << endl;
+            tablero = actual.estado;
+            cout << "Pasos realizados: ";
+            if (actual.camino.empty())
+            {
+                cout << "(sin pasos)";
+            }
+            else
+            {
+                for (int i = 0; i < actual.camino.size(); i++)
+                {
+                    cout << actual.camino[i];
+                    if (i + 1 < actual.camino.size())
+                    {
+                        cout << ", ";
+                    }
+                }
+            }
+            cout << endl;
+            tablero.agregarSolucion(actual.camino);
+            return actual.camino;
+        }
+        
+        // Crear representación string del estado para control de duplicados
+        string estadoKey = "";
+        for (const auto& fila : actual.estado.getTablero())
+        {
+            for (char celda : fila)
+            {
+                estadoKey += celda;
+            }
+        }
+        
+        // Si ya hemos visitado este estado, saltar
+        if (cerrados.find(estadoKey) != cerrados.end())
+        {
+            continue;
+        }
+        cerrados.insert(estadoKey);
+        
+        // Expandir: intentar 4 movimientos
+        for (char mov : {'u', 'd', 'l', 'r'})
+        {
+            Nodo sucesor{actual.estado, actual.camino, 0, 0};
+            
+            char vehiculo = moverVehiculo(sucesor.estado, mov, false);
+            
+            if (vehiculo != ' ')
+            {
+                sucesor.camino.push_back(vehiculo);
+                sucesor.g = actual.g + 1;
+                sucesor.h = calcularHeuristicaTablero(sucesor.estado, vehiculo);
+                
+                // Crear clave del sucesor para verificar si ya está en cerrados
+                string sucesorKey = "";
+                for (const auto& fila : sucesor.estado.getTablero())
+                {
+                    for (char celda : fila)
+                    {
+                        sucesorKey += celda;
+                    }
+                }
+                
+                // Solo agregar si no hemos visitado este estado
+                if (cerrados.find(sucesorKey) == cerrados.end())
+                {
+                    abiertos.push(sucesor);
+                }
+            }
+        }
+        
+        iter++;
+    }
+    
+    cout << "No se encontró solución después de " << iter << " iteraciones" << endl;
     vector<char> solucion;
-    // TODO: Implementar algoritmo A*
-    return solucion;
+    return solucion;  // No encontrado
 }
 
 vector<char> calcularAlgoritmoAndOr(Tablero &tablero)
