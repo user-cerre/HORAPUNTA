@@ -1,0 +1,61 @@
+SESION 1 - Prácticas de Inteligencia Artificial y Sistemas Inteligentes (IASI)
+Semana del 9 de febrero
+
+Presentación del proyecto y primer contacto técnico
+
+1. Objetivos de la sesión
+•
+
+Formar los grupos de trabajo (máximo 3 estudiantes).
+
+•
+
+Comprender el enunciado completo del proyecto de prácticas.
+
+•
+
+Realizar la primera tarea técnica del proyecto: Lectura de un tablero desde un fichero. Representación interna
+del tablero. Visualización formateada del estado inicial por consola.
+
+2. Actividades en clase
+Durante esta sesión se realizará:
+Organización de los grupos
+•
+
+Confirmación de los integrantes. Registro del grupo para la práctica desde el formulario que está en el
+campus, en el apartado de PROYECTO: “FORMULARIO PARA CREACIÓN DE GRUPOS”
+
+Presentación del problema
+•
+
+Descripción de las reglas del entorno. Objetivo de la aplicación. Idea de las técnicas de búsqueda que
+se utilizarán durante las siguientes sesiones. Criterios de evaluación y defensa individual del proyecto.
+
+Primer contacto técnico
+•
+
+Lectura desde fichero del tablero inicial del enunciado. Representación interna del estado. Impresión
+del tablero de manera legible en consola.
+
+3. Entrega obligatoria antes del 13 de febrero
+Cada grupo (sólo un integrante del grupo) debe entregar en el apartado de PROYECTO, en “Entrega de la SESION 1
+del proyecto HORAPUNTA”. Deberá subirse un ZIP con el nombre compuesto por los primeros apellidos de los
+componentes del grupo. Por ej. perez_gomez_garcia.zip
+•
+
+El programa debe:
+
+• Cargar un tablero de prueba desde un fichero.
+•
+
+Mostrar el tablero en consola.
+
+Esta entrega es mínima y sirve de base para el resto del proyecto.
+
+• La entrega realizada dentro del plazo otorgará +0,5 puntos adicionales en la nota final del proyecto.
+•
+
+No entregarla no penaliza, pero el grupo empezará la sesión siguiente sin esta parte completada, lo que puede
+dificultar el progreso y las subsiguientes entregas y puntuaciones.
+
+

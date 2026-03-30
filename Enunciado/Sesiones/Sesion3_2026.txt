@@ -1,0 +1,45 @@
+SESION 3 - Prácticas de Inteligencia Artificial y Sistemas Inteligentes (IASI)
+Semana del 23 de febrero Test del proyecto en ordenadores de la sala. Definiciones de heurísticas
+1. Objetivos de la sesión
+•
+
+Comprobar que lo desarrollado hasta ahora funciona en Eclipse Ubuntu de los ordenadores de Norba.
+
+•
+
+Diseñar las heurísticas que estimen la distancia de un estado al tablero objetivo.
+
+2. Actividades en clase
+Durante esta sesión se realizará:
+
+• Como primera tarea, copiar el proyecto actual y ejecutarlo en Eclipse de Ubuntu en Norba. En estas
+máquinas se evaluaría el proyecto, y deberá superarse la defensa.
+
+• Una vez leído el fichero y suponiendo que están implementados los movimientos válidos, definir
+alguna heurísitca (considerando posición de Z y X) que evalúen los estados.
+3. Entrega obligatoria antes del 27 de febrero
+Cada grupo (sólo un integrante del grupo) debe entregar en el apartado de PROYECTO, en “Entrega de la SESION 3
+del proyecto HORAPUNTA”. Deberá subirse un ZIP con el nombre compuesto por los primeros apellidos de los
+componentes del grupo. Por ej. perez_gomez_garcia.zip
+•
+
+El programa debe:
+
+• Cargar un tablero de prueba desde un fichero.
+•
+
+Mostrar alguna (al menos una) heuristica de los (cuatro o menos) posibles movimientos. En la salida
+debe mostrarse, junto al vehículo que se movió, la heurística de este estado.
+
+Esta entrega sirve para ir desarrollando el resto del proyecto.
+
+• La entrega realizada dentro del plazo otorgará +0,5 puntos adicionales en la nota final del proyecto.
+•
+
+No entregarla no penaliza, pero indica que el proyecto no se está desarrollando según la planificación hecha.
+
+Una vez definidos los movimientos y las heurísiticas, si diera tiempo en esta sesión deben diseñarse y en la medida de
+lo posible implementarse las estructuras que almacenarán los movimientos, y las técnicas de búsqueda con heurísticas
+que pueden dar solución al problema.
+
+

@@ -36,7 +36,21 @@ void delimitarVehiculo(Tablero &tablero, int x, int y, vector<pair<int, int>> &V
 
 bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov);
 
-char moverVehiculo(Tablero &tablero, char movimiento);
+// Estructura para encapsular información de una dirección de movimiento
+struct DireccionMovimiento {
+    int deltaX;
+    int deltaY;
+    const char* descripcion;
+};
+
+// Funciones auxiliares para moverVehiculo
+DireccionMovimiento obtenerDatosMovimiento(char movimiento);
+char intentarMoverVehiculo(Tablero &tablero, vector<vector<char>> &tableroRef, 
+                           int posX, int posY, char movimiento, 
+                           const DireccionMovimiento &direccion,
+                           bool mostrarMensajes = true);
+
+char moverVehiculo(Tablero &tablero, char movimiento, bool mostrarMensajes = true);
 
 int calcularHeuristicaXAZ(Tablero &tablero);
 
