@@ -27,8 +27,7 @@ int main(){
     cout << endl;
 
     // calcularEscaladaSimple(tablero);
-    // calcularEscaladaMaximaPendiente(tablero);
-    calcularEscaladaSimple(tablero);
+    calcularEscaladaMaximaPendiente(tablero);
 
     return 0; 
 }

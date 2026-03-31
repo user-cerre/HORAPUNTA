@@ -34,26 +34,13 @@ void encontrarZ(Tablero &tablero, int &posX, int &posY);
 
 bool dentroLimites(int x, int y);
 
-void delimitarVehiculo(Tablero &tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo,
-					   vector<vector<bool>> &visitados);
+void delimitarVehiculo(Tablero &tablero, int x, int y, vector<pair<int, int>> &V, char vehiculo);
 
 bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov);
 
-// Estructura para encapsular información de una dirección de movimiento
-struct DireccionMovimiento {
-    int deltaX;
-    int deltaY;
-    const char* descripcion;
-};
+void movimiento(Tablero &tablero, char movimiento);
 
-// Funciones auxiliares para moverVehiculo
-DireccionMovimiento obtenerDatosMovimiento(char movimiento);
-char intentarMoverVehiculo(Tablero &tablero, vector<vector<char>> &tableroRef, 
-                           int posX, int posY, char movimiento, 
-                           const DireccionMovimiento &direccion,
-                           bool mostrarMensajes = true);
-
-char moverVehiculo(Tablero &tablero, char movimiento, bool mostrarMensajes = true);
+char moverVehiculo(Tablero &tablero, char movimiento, bool mostrarMensajes);
 
 int calcularHeuristicaXAZ(Tablero &tablero);
 
