@@ -1,6 +1,0 @@
-O,C,C,D,L,L,
-A,Z,B,D,M,M,
-J,S,S,D,G,G,
-T,K,K,N,H,I,
-T,F,F,N,H,I,
-E,E,X,Q,Q,P,
