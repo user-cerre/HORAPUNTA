@@ -90,6 +90,25 @@ void cargarTablero(Tablero &tablero)
     }
 }
 
+void mostrarSolucionTablero(vector<char> solucion) {
+    cout << "Secuencia de la solución: ";
+    if (solucion.empty()) {
+        cout << "No se ha hallado la solución." << endl;;
+        return;
+    }
+    if(solucion.at(0) == ' '){
+        cout << "El tablero ya está resuelto, no es necesario realizar ningún movimiento.";
+    } else {
+        for (int i = 0; i < solucion.size(); i++) {
+            cout << solucion[i];
+            if (i + 1 < solucion.size()) {
+                cout << ", ";
+            }
+        }
+    }
+    cout << endl;
+}
+
 void encontrarX(Tablero &tablero, int &posX, int &posY)
 {
     bool encontrado = false;
@@ -182,152 +201,6 @@ bool puedeMoverse(int coordenadaDeX, vector<pair<int, int>> V, char mov)
     }
 
     return false;
-}
-
-void movimiento(Tablero &tablero, char movimiento){
-    int posX, posY;
-    vector<vector<char>> tableroTemp = tablero.getTablero();
-    encontrarX(tablero, posX, posY);
-    char vehiculo;
-    bool movimientoValido = false;
-    vector<pair<int,int>> V;
-    switch (movimiento)
-    {
-    case 'u':
-    V.clear();
-    if(dentroLimites(posX+1, posY)){
-        vehiculo = tablero.getTablero()[posX+1][posY];
-        delimitarVehiculo(tablero, posX+1, posY, V, vehiculo);
-        if(V.size() == 1){
-            tableroTemp[posX+1][posY] = 'X';
-            tableroTemp[posX][posY] = vehiculo;
-            tablero.setTablero(tableroTemp);
-            movimientoValido = true;
-        } else if(puedeMoverse(posY, V, movimiento)){
-            if(V.size() == 2){
-                tableroTemp[posX+2][posY] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            } else{
-                tableroTemp[posX+3][posY] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            }
-        } 
-        if(movimientoValido){
-            cout << "Has movido el vehículo " << vehiculo << " hacia arriba" << endl;
-        } else{
-            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia arriba" << endl;
-        }
-    } else{
-        cout << "No se ha podido mover el vehículo hacia arriba porque se encuentra en el límite del tablero" << endl;
-    }
-        break;
-    case 'd':
-    V.clear();
-    if(dentroLimites(posX-1, posY)){
-        vehiculo = tablero.getTablero()[posX-1][posY];
-        delimitarVehiculo(tablero, posX-1, posY, V, vehiculo);
-        if(V.size() == 1){
-            tableroTemp[posX-1][posY] = 'X';
-            tableroTemp[posX][posY] = vehiculo;
-            tablero.setTablero(tableroTemp);
-            movimientoValido = true;
-        } else if(puedeMoverse(posY, V, movimiento)){
-            if(V.size() == 2){
-                tableroTemp[posX-2][posY] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            } else{
-                tableroTemp[posX-3][posY] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            }
-        } 
-        if(movimientoValido){
-            cout << "Has movido el vehículo " << vehiculo << " hacia abajo" << endl;
-        } else{
-            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia abajo" << endl;
-        }
-    } else{
-        cout << "No se ha podido mover el vehículo hacia abajo porque se encuentra en el límite del tablero" << endl;
-    }
-    break;
-
-    case 'r':
-    V.clear();
-    if(dentroLimites(posX, posY-1)){
-        vehiculo = tablero.getTablero()[posX][posY-1];
-        delimitarVehiculo(tablero, posX, posY-1, V, vehiculo);
-        if(V.size() == 1){
-            tableroTemp[posX][posY-1] = 'X';
-            tableroTemp[posX][posY] = vehiculo;
-            tablero.setTablero(tableroTemp);
-            movimientoValido = true;
-        } else if(puedeMoverse(posX, V, movimiento)){
-            if(V.size() == 2){
-                tableroTemp[posX][posY-2] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            } else{
-                tableroTemp[posX][posY-3] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            }
-        } 
-        if(movimientoValido){
-            cout << "Has movido el vehículo " << vehiculo << " hacia la derecha" << endl;
-        } else{
-            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la derecha" << endl;
-        }
-    } else{
-        cout << "No se ha podido mover el vehículo hacia la derecha porque se encuentra en el límite del tablero" << endl;
-    }
-    break;
-
-    case 'l':
-    V.clear();
-    if(dentroLimites(posX, posY+1)){
-        vehiculo = tablero.getTablero()[posX][posY+1];
-        delimitarVehiculo(tablero, posX, posY+1, V, vehiculo);
-        if(V.size() == 1){
-            tableroTemp[posX][posY+1] = 'X';
-            tableroTemp[posX][posY] = vehiculo;
-            tablero.setTablero(tableroTemp);
-            movimientoValido = true;
-        } else if(puedeMoverse(posX, V, movimiento)){
-            if(V.size() == 2){
-                tableroTemp[posX][posY+2] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            } else{
-                tableroTemp[posX][posY+3] = 'X';
-                tableroTemp[posX][posY] = vehiculo;
-                tablero.setTablero(tableroTemp);
-                movimientoValido = true;
-            }
-        } 
-        if(movimientoValido){
-            cout << "Has movido el vehículo " << vehiculo << " hacia la izquierda" << endl;
-        } else{
-            cout << "No se ha podido mover el vehículo " << vehiculo << " hacia la izquierda" << endl;
-        }
-    } else{
-        cout << "No se ha podido mover el vehículo hacia la izquierda porque se encuentra en el límite del tablero" << endl;
-    }
-    break;
-
-    default:
-        cout << "Movimiento no válido, escoja de nuevo" << endl;
-        break;
-    }
 }
 
 char moverVehiculo(Tablero &tablero, char movimiento, bool mostrarMensajes)
@@ -512,65 +385,26 @@ char moverVehiculo(Tablero &tablero, char movimiento, bool mostrarMensajes)
     }
     return vehiculo;
 }
-int calcularHeuristicaXAZ(Tablero &tablero)
-{
-    int posXdeX, posYdeX, posXdeZ, posYdeZ;
-    int distanciaManhattan;
-    encontrarX(tablero, posXdeX, posYdeX);
-    encontrarZ(tablero, posXdeZ, posYdeZ);
-    return abs(posXdeX - (posXdeZ)) + abs((posYdeX - posYdeZ));
-}
 
-int distanciaZABorde(Tablero &tablero)
-{
-    int posXdeZ, posYdeZ;
-    encontrarZ(tablero, posXdeZ, posYdeZ);
-    int distancia = min(posXdeZ, posYdeZ);
-    if (distancia < 3)
-    {
-        return distancia;
-    }
-    return 5 - distancia;
-}
-int distanciaXABordeDeZ(Tablero &tablero)
-{
-    int posXdeZ, posYdeZ;
-    encontrarZ(tablero, posXdeZ, posYdeZ);
-    int posXdeX, posYdeX;
-    encontrarX(tablero, posXdeX, posYdeX);
-    if(posXdeZ == posXdeX){
-        int distancia = posXdeX;
-        if (distancia < 3)
-        {
-            return distancia;
-        }
-        return 5 - distancia;
-    } else if(posYdeZ == posYdeX){
-        int distancia = posYdeX;
-        if (distancia < 3)
-        {
-            return distancia;
-        }else{
-            return 5 - distancia;
-        }
-    }else{
-        if(posXdeZ < posYdeZ){//TODO revisar esta parte
-            int distancia = posXdeX;
-            if (distancia < 3 && posXdeZ < 3)
-            {
-                return distancia;
-            }
-            return 5 - distancia;
-        } else{
-            int distancia = posYdeX;
-            if (distancia < 3 && posYdeZ < 3)
-            {
-                return distancia;
-            }
-            return 5 - distancia;
-        }
-    }
-}
+// int calcularHeuristicaXAZ(Tablero &tablero)
+// {
+//     int posXdeX, posYdeX, posXdeZ, posYdeZ;
+//     encontrarX(tablero, posXdeX, posYdeX);
+//     encontrarZ(tablero, posXdeZ, posYdeZ);
+//     return abs(posXdeX - (posXdeZ)) + abs((posYdeX - posYdeZ));
+// }
+
+// int distanciaZABorde(Tablero &tablero)
+// {
+//     int posXdeZ, posYdeZ;
+//     encontrarZ(tablero, posXdeZ, posYdeZ);
+//     int distancia = min(posXdeZ, posYdeZ);
+//     if (distancia < 3)
+//     {
+//         return distancia;
+//     }
+//     return 5 - distancia;
+// }
 
 bool esObjetivo(Tablero &tablero)
 {
@@ -580,203 +414,268 @@ bool esObjetivo(Tablero &tablero)
     return xZ == 0 || xZ == 5 || yZ == 0 || yZ == 5;
 }
 
-int calcularHeuristicaTablero(Tablero &tablero, char vehiculo)
+int distanciaManhattan(int x1, int y1, int x2, int y2)
 {
-    int xZ = 0;
-    int yZ = 0;
-    encontrarZ(tablero, xZ, yZ);
-    int a = min (xZ, yZ);
-    int b = min (5 - xZ, 5 - yZ);
-    int h1= min(a, b);
-    int xX = 0;
-    int yX = 0;
-    encontrarX(tablero, xX, yX);
-    if(xX == xZ || yX == yZ){
-        return h1;
-    }else{
-        return h1 +1;
-    }
-    // int heurZ = calcularHeuristicaXAZ(tablero);
-    // int heurBordeZ = distanciaZABorde(tablero);
-    // int heurBordeX = distanciaXABordeDeZ(tablero);
-    // return heurZ + heurBordeZ /* + heurBordeX*/;
-    // return min()
+    return (x1 > x2 ? x1 - x2 : x2 - x1) +
+           (y1 > y2 ? y1 - y2 : y2 - y1);
 }
 
-vector<char> calcularEscaladaSimple(Tablero &tablero)
+int contarBloqueadoresEnLinea(const vector<vector<char>> &tableroAux,
+                              int origenX, int origenY,
+                              int dX, int dY)
 {
+    //1º) Primero crea un conjunto que almacenará los vehículos bloqueadores. Como un conjunto sólo guarda elementos
+    // únicos, no habrá duplicados aunque un vehículo bloquee la línea en varias posiciones (es decir, que sea más grande
+    // de 1x1).
+    set<char> bloqueadores;
+    //2º) Luego, empieza en la celda inmediatamente siguiente a Z, por eso se le suma dX y dY a las coordenadas de origen, 
+    //y va avanzando en la dirección dada por dX y dY (que pueden ser 1, -1 o 0).
+    int x = origenX + dX;
+    int y = origenY + dY;
+
+    while (dentroLimites(x, y))
+    {
+        char celda = tableroAux[x][y];
+        //3º) Si la celda no es X ni está fuera del tablero, añade ese vehículo al conjunto.
+        if (celda != 'X')
+        {
+            bloqueadores.insert(celda);
+        } 
+        //4º) Avanza una posición en la misma dirección y repite el proceso hasta que salga del tablero.
+        x += dX;
+        y += dY;
+    }
+    //5º) Finalmente, devuelve el número de vehículos bloqueadores, que es el tamaño del conjunto
+    return bloqueadores.size();
+}
+
+bool estaEnEsquinaDeTablero(int xX, int xY)
+{
+    return (xX == 0 && xY == 0) || 
+    abs(xX - xY) == 5 ||
+    (xX == 5 && xY == 5);
+}
+
+int calcularHeuristicaTablero(Tablero &tablero)
+{
+    int zX, zY;
+    encontrarZ(tablero, zX, zY);
+
+    if (esObjetivo(tablero))
+    {
+        return 0;
+    }
+
+    int xX, xY;
+    encontrarX(tablero, xX, xY);
+    //Hasta aquí simplemente hemos guardado las posiciones de Z y X para poder usarlas después en 
+    //todos los cálculos de la heurística. También hemos comprobado si Z ya está en una posición objetivo,
+    //en ese caso la heurística es 0 porque ya hemos llegado a la solución.
+    vector<vector<char>> tableroAux = tablero.getTablero();
+    int mejorCoste = INT_MAX;
+    //Guardamos una copia del tablero para no modificar el estado del juego al calcular la heurística.
+    //También inicializamos una variable que lleve el mejor coste encontrado hasta ahora con un valor máximo, la cual
+    //se utilizará para buscar el cote mínimo entre las cuatro direcciones.
+    const vector<pair<int, int>> direcciones = {
+        {-1, 0}, {1, 0}, {0, -1}, {0, 1}
+    };
+    //Creamos un vector con las cuatro direcciones posibles (arriba, abajo, izquierda, derecha respectivamente) representadas como 
+    //cambios en las coordenadas x e y.
+    for (auto [dx, dy] : direcciones)
+    {
+        int pasoX = zX + dx;
+        int pasoY = zY + dy;
+        if (!dentroLimites(pasoX, pasoY))
+        {
+            continue;
+        }
+
+        int pasosHastaBorde;
+        if (dx < 0)
+            pasosHastaBorde = zX;
+        else if (dx > 0)
+            pasosHastaBorde = filas - 1 - zX;
+        else if (dy < 0)
+            pasosHastaBorde = zY;
+        else
+            pasosHastaBorde = columnas - 1 - zY;
+
+        int bloqueadores = contarBloqueadoresEnLinea(tableroAux, zX, zY, dx, dy);
+        int costoX = tableroAux[pasoX][pasoY] == 'X'
+                        ? 0
+                        : distanciaManhattan(xX, xY, pasoX, pasoY);
+
+        int ajusteEsquina = estaEnEsquinaDeTablero(xX, xY) ? -1 : 0; 
+
+        int costoDireccion = pasosHastaBorde + bloqueadores * 2 + costoX + ajusteEsquina;
+        if(costoDireccion < 0){
+            costoDireccion = 0;
+        }
+        if (costoDireccion < mejorCoste)
+        {
+            mejorCoste = costoDireccion;
+        }
+    }
+
+    /*
+    Explicación del bucle por pasos: Este bucle for itera sobre las cuatro direcciones posibles. 
+    Para cada una de ellas hacemos:
+    1º) Se calcula la posición que debe ocupar X para que Z pueda moverse en esa dirección (pasoX, pasoY). 
+    Esto se hace sumando el cambio de dirección (dx, dy) a las coordenadas actuales de Z (zX, zY). Si esa
+    casilla está fuera del tablero, descartamos esa dirección.
+    2º) Se calcula cuántas casillas tiene que recorrer Z para llegar al borde en esa dirección (pasosHastaBorde). 
+    Esto depende de la dirección: si es hacia arriba, es igual a la coordenada x de Z, si es hacia abajo, 
+    es la diferencia entre el número de filas y la coordenada x de Z, etc.
+    3º) Se cuenta cuántos vehículos distintos bloquean la línea desde Z hacia el borde en esa dirección(bloqueadores).
+    4º) Se calcula el coste de mover X a la posición necesaria. Si esa posición ya la ocupa X, el coste es 0, si no, 
+    se calcula la distancia Manhattan entre la posición actual de X y esa posición.
+    5º) Se aplica una bonificación si X está en una esquina del tablero, ya que esto siempre permite el movimiento de 2
+    vehículos en lugar de 1, lo cual es muy beneficioso para desbloquear a Z.
+    6º) Se calcula el coste total de esa dirección como la suma de los pasos hasta el borde, el doble del número de 
+    bloqueadores (se multiplica por 2 para dar más peso al hecho de que desbloquear un vehículo es costoso) y el coste 
+    de mover X. Si este coste es menor que el mejor coste encontrado hasta ahora, se actualiza el mejor coste.
+    */
+
+    if (mejorCoste == INT_MAX)
+    {
+        int distanciaMinimaBorde =
+            std::min({zX, zY, filas - 1 - zX, columnas - 1 - zY});
+        int distanciaXZ = distanciaManhattan(xX, xY, zX, zY);
+        return distanciaMinimaBorde + distanciaXZ + 1;
+    }
+
+    //Esta parte es sólo en caso de que no se encuentre ninguna dirección válida (muy improbable).
+    //En este caso se calcula una heurística de emergencia que es la suma de la distancia de Z al borde más cercano, 
+    //la distancia de X a Z y un pequeño valor adicional para penalizar esta situación.
+
+    return mejorCoste;
+}
+
+vector<char> calcularEscaladaSimple(Tablero &tablero){
+    cout << "Calculando solución con el método de Escalada Simple..." << endl;
+    auto inicio = chrono::high_resolution_clock::now();
     vector<char> solucion;
-    int heuristicaActual;
+    int numNodosGenerados = 0;
     int iterMax = 200;
     int iter = 0;
-    char vehiculo = '?';
-    while(!esObjetivo(tablero) && iter < iterMax){
-        heuristicaActual = calcularHeuristicaTablero(tablero, vehiculo);
-        bool huboMejora = false;
-        for (int i = 0; i < 4; i++)
-        {
-            vector<vector<char>> tableroTemp = tablero.getTablero();
-            char mov;
-            switch (i)
-            {
-            case 0:
-                mov = 'u';
-                break;
-            case 1:
-                mov = 'd';
-                break;
-            case 2:
-                mov = 'l';
-                break;
-            case 3:
-                mov = 'r';
-                break;
-            }
-            vehiculo = moverVehiculo(tablero, mov, false);
-            if (vehiculo == ' ')
-            {
-                tablero.setTablero(tableroTemp);
+
+    while (!esObjetivo(tablero) && iter < iterMax) {
+        int heuristicaActual = calcularHeuristicaTablero(tablero);
+        char mejorVehiculo = ' ';
+        char mejorMovimiento = ' ';
+        int mejorHeuristica = heuristicaActual;
+
+        for (char mov : {'u', 'd', 'l', 'r'}) {
+            numNodosGenerados++;
+            Tablero temp = tablero;
+            char vehiculo = moverVehiculo(temp, mov, false);
+            if (vehiculo == ' ') {
                 continue;
             }
-            int heuristicaNueva = calcularHeuristicaTablero(tablero, vehiculo);
-            if (heuristicaNueva < heuristicaActual)
-            {
-                heuristicaActual = heuristicaNueva;
-                huboMejora = true;
-                solucion.push_back(vehiculo);
-                cout << "Has movido el vehículo " << vehiculo << endl;
-                mostrar(tablero);
-                cout << "Heurística actual: " << heuristicaNueva << endl;
-                cout << endl;
-                if (heuristicaNueva == 0)
-                {
-                    break;
-                }
+
+            mejorHeuristica = calcularHeuristicaTablero(temp);
+            if (mejorHeuristica < heuristicaActual) {
+                tablero = temp;
+                mejorVehiculo = vehiculo;
+                mejorMovimiento = mov;
                 break;
             }
-            else
-            {
-                tablero.setTablero(tableroTemp);
-            }
         }
-        if (esObjetivo(tablero))
-        {
+
+        if (mejorVehiculo == ' ') {
             break;
         }
-        if (!huboMejora)
-        {
+
+        solucion.push_back(mejorVehiculo);
+
+        cout << "Has movido el vehículo " << mejorVehiculo
+             << " (" << mejorMovimiento << ")" << endl;
+        mostrar(tablero);
+        cout << "Heurística actual: " << mejorHeuristica << endl;
+        cout << endl;
+
+        if (mejorHeuristica == 0) {
             break;
         }
+
         iter++;
     }
-    cout << "Pasos realizados: ";
-    if (solucion.empty())
-    {
-        cout << "(sin pasos)";
+
+    if(numNodosGenerados == 0){
+        solucion.push_back(' ');
     }
-    else
-    {
-        for (int i = 0; i < solucion.size(); i++)
-        {
-            cout << solucion[i];
-            if (i + 1 < solucion.size())
-            {
-                cout << ", ";
-            }
-        }
-    }
-    cout << endl;
+
+    mostrarSolucionTablero(solucion);
+    auto fin = chrono::high_resolution_clock::now();
+    auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+    cout << "Tiempo de ejecución: " << duracion.count() << " ms" << endl;
+    cout << "Número de nodos generados: " << numNodosGenerados << endl;
 
     tablero.agregarSolucion(solucion);
     return solucion;
-    
 }
 
-vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero)
-{
+vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero) {
+    cout << "Calculando solución con el método de Escalada de Máxima Pendiente..." << endl;
+    auto inicio = chrono::high_resolution_clock::now();
     vector<char> solucion;
+    int numNodosGenerados = 0;
     int iterMax = 200;
     int iter = 0;
-    while(!esObjetivo(tablero) && iter < iterMax){
-        int heuristicaActual = calcularHeuristicaTablero(tablero, '?');
+
+    while (!esObjetivo(tablero) && iter < iterMax) {
+        int heuristicaActual = calcularHeuristicaTablero(tablero);
         int mejorHeuristica = heuristicaActual;
-        char vehiculo = '?';
-        char mejorVehiculo = '?';
-        char mejorMovimiento = '?';
-        for (int i = 0; i < 4; i++)
-        {
-            vector<vector<char>> tableroTemp = tablero.getTablero();
-            char mov;
-            switch (i)
-            {
-            case 0:
-                mov = 'u';
-                break;
-            case 1:
-                mov = 'd';
-                break;
-            case 2:
-                mov = 'l';
-                break;
-            case 3:
-                mov = 'r';
-                break;
-            }
-            vehiculo = moverVehiculo(tablero, mov, false);
-            if (vehiculo == ' ')
-            {
-                tablero.setTablero(tableroTemp);
+        char mejorVehiculo = ' ';
+        char mejorMovimiento = ' ';
+        Tablero mejorTablero = tablero;
+
+        for (char mov : {'u', 'd', 'l', 'r'}) {
+            numNodosGenerados++;
+            Tablero temp = tablero;
+            char vehiculo = moverVehiculo(temp, mov, false);
+            if (vehiculo == ' ') {
                 continue;
             }
-            int heuristicaNueva = calcularHeuristicaTablero(tablero, vehiculo);
-            if (heuristicaNueva < mejorHeuristica)
-            {
+
+            int heuristicaNueva = calcularHeuristicaTablero(temp);
+            if (heuristicaNueva < mejorHeuristica) {
                 mejorHeuristica = heuristicaNueva;
                 mejorVehiculo = vehiculo;
                 mejorMovimiento = mov;
-            }
-            tablero.setTablero(tableroTemp);
-        }
-        if (mejorVehiculo != '?')
-        {
-            moverVehiculo(tablero, mejorMovimiento, false);
-            solucion.push_back(mejorVehiculo);
-            cout << "Has movido el vehículo " << mejorVehiculo << endl;
-            mostrar(tablero);
-            cout << "Heurística actual: " << mejorHeuristica << endl;
-            cout << endl;
-            if (mejorHeuristica == 0)
-            {
-                break;
+                mejorTablero = temp;
             }
         }
-        else
-        {
-            break; // No se encontró un movimiento mejor
-        }
-        if (mejorHeuristica >= heuristicaActual)
-        {
+
+        if (mejorVehiculo == ' ') {
             break;
         }
+
+        tablero = mejorTablero;
+        solucion.push_back(mejorVehiculo);
+
+        cout << "Has movido el vehículo " << mejorVehiculo
+             << " (" << mejorMovimiento << ")" << endl;
+        mostrar(tablero);
+        cout << "Heurística actual: " << mejorHeuristica << endl;
+        cout << endl;
+
+        if (mejorHeuristica == 0) {
+            break;
+        }
+
         iter++;
     }
-    cout << "Pasos realizados: ";
-    if (solucion.empty())
-    {
-        cout << "(sin pasos)";
+
+    if(numNodosGenerados == 0){
+        solucion.push_back(' ');
     }
-    else
-    {
-        for (int i = 0; i < solucion.size(); i++)
-        {
-            cout << solucion[i];
-            if (i + 1 < solucion.size())
-            {
-                cout << ", ";
-            }
-        }
-    }
-    cout << endl;
+
+    mostrarSolucionTablero(solucion);
+    auto fin = chrono::high_resolution_clock::now();
+    auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+    cout << "Tiempo de ejecución: " << duracion.count() << " ms" << endl;
+    cout << "Número de nodos generados: " << numNodosGenerados << endl;
 
     tablero.agregarSolucion(solucion);
     return solucion;
@@ -789,6 +688,7 @@ vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
     return solucion;
 }
 
+//TODO: ESTO ES UNA FUMADA, HAY QUE VOLVER A HACERLO.
 vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
 {
     // Estructura para un nodo en la búsqueda A*
@@ -812,7 +712,7 @@ vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
     set<string> cerrados;
     
     // Nodo inicial
-    Nodo inicial{tablero, {}, 0, calcularHeuristicaTablero(tablero, '?')};
+    Nodo inicial{tablero, {}, 0, calcularHeuristicaTablero(tablero)};
     
     abiertos.push(inicial);
     
@@ -883,7 +783,7 @@ vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
             {
                 sucesor.camino.push_back(vehiculo);
                 sucesor.g = actual.g + 1;
-                sucesor.h = calcularHeuristicaTablero(sucesor.estado, vehiculo);
+                sucesor.h = calcularHeuristicaTablero(sucesor.estado);
                 
                 // Crear clave del sucesor para verificar si ya está en cerrados
                 string sucesorKey = "";
