@@ -17,6 +17,7 @@ namespace fs = std::filesystem;
 
 extern const int filas;
 extern const int columnas;
+extern const int alfa;  // Valor umbral para la escalada simple estocástica.
 
 extern vector<vector<bool>> Visitados; 
 
@@ -66,10 +67,8 @@ vector<char> calcularEscaladaSimple(Tablero &tablero);
 
 vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero);
 
-//vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero);
+vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero);
 
 vector<char> calcularAlgoritmoEstrella(Tablero &tablero);
-
-//vector<char> calcularAlgoritmoAndOr(Tablero &tablero);
 
 #endif

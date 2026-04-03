@@ -16,7 +16,7 @@ int main(){
     cout<<"Authors:"<<endl;
     cerr<<"Eduardo Cabello Gil"<<endl;
     cerr<<"Carlos Paredes Ruiz"<<endl;
-    cerr<<"Gabriel Ramos Sanchez"<<endl;
+    cerr<<"Gabriel Ramos Sánchez"<<endl;
     cout<<endl;
     
     Tablero tablero(filas, columnas);
@@ -26,9 +26,35 @@ int main(){
     mostrar(tablero);
     cout << endl;
 
-    //calcularEscaladaSimple(tablero);
-    calcularEscaladaMaximaPendiente(tablero);
-    //calcularEscaladaMaximaPendiente(tablero);
+    int algoritmoBusqueda;
+    cout << "Elige qué algoritmo usar para intentar resolver el tablero elegido: " << endl;
+    cout << "1 - Escalada Simple." << endl;
+    cout << "2 - Escalada Máxima Pendiente." << endl;
+    cout << "3 - Escalada Simple Estocástica." << endl;
+    cout << "4 - Algoritmo A*." << endl;
+    cin >> algoritmoBusqueda;
+
+    switch (algoritmoBusqueda)
+    {
+    case 1:
+        calcularEscaladaSimple(tablero);
+        break;
+
+    case 2:
+        calcularEscaladaMaximaPendiente(tablero);
+        break;
+    
+    case 3:
+        calcularEscaladaSimpleEstocastica(tablero);
+        break;
+
+    case 4:
+        calcularAlgoritmoEstrella(tablero);
+    
+    default:
+        cout << "Opción inválida, elija de nuevo. " << endl;
+        break;
+    }
 
     return 0; 
 }

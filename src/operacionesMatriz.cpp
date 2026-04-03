@@ -1,8 +1,11 @@
 #include "operacionesMatriz.h"
 #include "Tablero.h"
+#include "Nodo.h"
 #include <filesystem>
 
 using namespace std::filesystem;
+
+const int alfa = 2;
 
 vector<vector<bool>> Visitados(filas, vector<bool>(columnas, false));
 
@@ -578,7 +581,8 @@ vector<char> calcularEscaladaSimple(Tablero &tablero){
                 tablero = temp;
                 mejorVehiculo = vehiculo;
                 mejorMovimiento = mov;
-                break;
+                break; //En el momento que encontramos un estado con una heurística mejor que la actual, 
+                       //salimos del bucle para no probar ningún otro estado, cosa que caracteriza a la escalada simple.
             }
         }
 
@@ -683,137 +687,71 @@ vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero) {
 
 vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
 {
+    cout << "Calculando solución con el método de Escalada Simple Estocástica..." << endl;
+    auto inicio = chrono::high_resolution_clock::now();
     vector<char> solucion;
-    // TODO: Implementar cálculo de escalada simple estocástica
-    return solucion;
-}
-
-//TODO: ESTO ES UNA FUMADA, HAY QUE VOLVER A HACERLO.
-vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
-{
-    // Estructura para un nodo en la búsqueda A*
-    struct Nodo {
-        Tablero estado;
-        vector<char> camino;
-        int g;  // costo desde el inicio (número de pasos)
-        int h;  // heurística estimada al objetivo
-        
-        int f() const { return g + h; }
-        
-        bool operator>(const Nodo& otro) const {
-            return f() > otro.f();  // Para min-heap
-        }
-    };
-    
-    // Cola de prioridad ordenada por f(n)
-    priority_queue<Nodo, vector<Nodo>, greater<Nodo>> abiertos;
-    
-    // Conjunto de estados visitados (usando string como representación)
-    set<string> cerrados;
-    
-    // Nodo inicial
-    Nodo inicial{tablero, {}, 0, calcularHeuristicaTablero(tablero)};
-    
-    abiertos.push(inicial);
-    
-    int iterMax = 10000;
+    int numNodosGenerados = 0;
+    int iterMax = 200;
     int iter = 0;
-    
-    while (!abiertos.empty() && iter < iterMax)
-    {
-        Nodo actual = abiertos.top();
-        abiertos.pop();
-        
-        cout << "---A* Iteración " << (iter + 1) << " (f=" << actual.f() 
-             << ", g=" << actual.g << ", h=" << actual.h << ")---" << endl;
-        mostrar(actual.estado);
+
+    while (!esObjetivo(tablero) && iter < iterMax) {
+        int heuristicaActual = calcularHeuristicaTablero(tablero);
+        char mejorVehiculo = ' ';
+        char mejorMovimiento = ' ';
+        int mejorHeuristica = heuristicaActual;
+
+        for (char mov : {'u', 'd', 'l', 'r'}) {
+            numNodosGenerados++;
+            Tablero temp = tablero;
+            char vehiculo = moverVehiculo(temp, mov, false);
+            if (vehiculo == ' ') {
+                continue;
+            }
+
+            mejorHeuristica = calcularHeuristicaTablero(temp);
+            if (mejorHeuristica < heuristicaActual && heuristicaActual < alfa) { //Comparamos el estado actual con alfa, característico de la escalada simple estocástica.
+                tablero = temp;
+                mejorVehiculo = vehiculo;
+                mejorMovimiento = mov;
+                break; //En el momento que encontramos un estado con una heurística mejor que la actual, 
+                       //salimos del bucle para no probar ningún otro estado, cosa que caracteriza a la escalada simple.
+            }
+        }
+
+        if (mejorVehiculo == ' ') {
+            break;
+        }
+
+        solucion.push_back(mejorVehiculo);
+
+        cout << "Has movido el vehículo " << mejorVehiculo
+             << " (" << mejorMovimiento << ")" << endl;
+        mostrar(tablero);
+        cout << "Heurística actual: " << mejorHeuristica << endl;
         cout << endl;
-        
-        // Verificar si es objetivo
-        if (esObjetivo(actual.estado))
-        {
-            cout << "¡Objetivo encontrado!" << endl;
-            tablero = actual.estado;
-            cout << "Pasos realizados: ";
-            if (actual.camino.empty())
-            {
-                cout << "(sin pasos)";
-            }
-            else
-            {
-                for (int i = 0; i < actual.camino.size(); i++)
-                {
-                    cout << actual.camino[i];
-                    if (i + 1 < actual.camino.size())
-                    {
-                        cout << ", ";
-                    }
-                }
-            }
-            cout << endl;
-            tablero.agregarSolucion(actual.camino);
-            return actual.camino;
+
+        if (mejorHeuristica == 0) {
+            break;
         }
-        
-        // Crear representación string del estado para control de duplicados
-        string estadoKey = "";
-        for (const auto& fila : actual.estado.getTablero())
-        {
-            for (char celda : fila)
-            {
-                estadoKey += celda;
-            }
-        }
-        
-        // Si ya hemos visitado este estado, saltar
-        if (cerrados.find(estadoKey) != cerrados.end())
-        {
-            continue;
-        }
-        cerrados.insert(estadoKey);
-        
-        // Expandir: intentar 4 movimientos
-        for (char mov : {'u', 'd', 'l', 'r'})
-        {
-            Nodo sucesor{actual.estado, actual.camino, 0, 0};
-            
-            char vehiculo = moverVehiculo(sucesor.estado, mov, false);
-            
-            if (vehiculo != ' ')
-            {
-                sucesor.camino.push_back(vehiculo);
-                sucesor.g = actual.g + 1;
-                sucesor.h = calcularHeuristicaTablero(sucesor.estado);
-                
-                // Crear clave del sucesor para verificar si ya está en cerrados
-                string sucesorKey = "";
-                for (const auto& fila : sucesor.estado.getTablero())
-                {
-                    for (char celda : fila)
-                    {
-                        sucesorKey += celda;
-                    }
-                }
-                
-                // Solo agregar si no hemos visitado este estado
-                if (cerrados.find(sucesorKey) == cerrados.end())
-                {
-                    abiertos.push(sucesor);
-                }
-            }
-        }
-        
+
         iter++;
     }
-    
-    cout << "No se encontró solución después de " << iter << " iteraciones" << endl;
-    vector<char> solucion;
-    return solucion;  // No encontrado
+
+    if(numNodosGenerados == 0){
+        solucion.push_back(' ');
+    }
+
+    mostrarSolucionTablero(solucion);
+    auto fin = chrono::high_resolution_clock::now();
+    auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+    cout << "Tiempo de ejecución: " << duracion.count() << " ms" << endl;
+    cout << "Número de nodos generados: " << numNodosGenerados << endl;
+
+    tablero.agregarSolucion(solucion);
+    return solucion;
 }
 
-vector<char> calcularAlgoritmoAndOr(Tablero &tablero)
+vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
 {
-    vector<char> solucion;
-    // TODO: Implementar algoritmo AND-OR
-    return solucion;
+    
 }
