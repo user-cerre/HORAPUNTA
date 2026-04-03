@@ -11,13 +11,13 @@ class Nodo {
     public:
         Nodo(Tablero t, Nodo* p, int h, int c);
 
-        Tablero getEstado();
+        Tablero getEstado() const;
 
-        Nodo* getPadre();
+        Nodo* getPadre() const;
 
-        int getHeuristica();
+        int getHeuristica() const;
 
-        int getCoste();
+        int getCoste() const;
 
         void setEstado(Tablero t);
 
@@ -27,7 +27,7 @@ class Nodo {
 
         void setCoste(int c);
 
-        int getValor();
+        int getValor() const;
 
         bool operator==(const Nodo& otro) const;
 

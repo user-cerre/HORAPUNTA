@@ -5,19 +5,19 @@ Nodo::Nodo(Tablero t, Nodo* p, int h, int c)
 {
 }
 
-Tablero Nodo::getEstado(){
+Tablero Nodo::getEstado() const {
     return estado;
 }
 
-Nodo* Nodo::getPadre(){
+Nodo* Nodo::getPadre() const {
     return padre;
 }
 
-int Nodo::getHeuristica(){
+int Nodo::getHeuristica() const {
     return heuristica;
 }
 
-int Nodo::getCoste(){
+int Nodo::getCoste() const {
     return coste;
 }
 
@@ -37,7 +37,7 @@ void Nodo::setCoste(int c){
     coste = c;
 }
 
-int Nodo::getValor(){
+int Nodo::getValor() const {
     return heuristica + coste;
 }
 

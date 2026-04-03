@@ -751,7 +751,101 @@ vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
     return solucion;
 }
 
-vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
-{
-    
-}
+// Nodo * comprobarEnVectores(vector<Nodo> &abiertos, vector<Nodo> &cerrados, Nodo &nuevoNodo){
+//     for(Nodo &nodoAbierto : abiertos){
+//         if(nodoAbierto.getEstado().getTablero() == nuevoNodo.getEstado().getTablero()){
+//             return &nodoAbierto;
+//         }
+//     }
+//     for(Nodo &nodoCerrado : cerrados){
+//         if(nodoCerrado.getEstado().getTablero() == nuevoNodo.getEstado().getTablero()){
+//             return &nodoCerrado;
+//         }
+//     }
+//     return nullptr;
+// }
+
+// vector<char> calcularAlgoritmoEstrella(Tablero &tablero)
+// {
+//     cout << "Calculando solución con el método de Algoritmo A*..." << endl;
+//     auto inicio = chrono::high_resolution_clock::now();
+//     vector<char> solucion;
+//     int numNodosGenerados = 0;
+//     int nuevaHeuristica = 0;
+//     int nuevoCoste = 0;
+//     int iterMax = 200;
+//     int iter = 0;
+
+//     vector<Nodo> abiertos;
+//     Nodo raiz(tablero, nullptr, calcularHeuristicaTablero(tablero), 0);
+//     abiertos.push_back(raiz);
+//     vector<Nodo> cerrados;
+
+//     while (!esObjetivo(tablero) && iter < iterMax) {
+//         int heuristicaActual = calcularHeuristicaTablero(tablero);
+
+//         for (char mov : {'u', 'd', 'l', 'r'}) {
+//             numNodosGenerados++;
+//             Tablero temp = tablero;
+//             char vehiculo = moverVehiculo(temp, mov, false);
+//             if (vehiculo == ' ') {
+//                 continue;
+//             }
+
+//             nuevaHeuristica = calcularHeuristicaTablero(temp);
+//             nuevoCoste = abiertos.front().getCoste() + 1;
+
+//             Nodo nuevoNodo(temp, &abiertos.front(), nuevaHeuristica, nuevoCoste);
+//             Nodo *nodoAnterior = comprobarEnVectores(abiertos, cerrados, nuevoNodo);
+//             if(nodoAnterior != nullptr && nuevoNodo.getValor() < nodoAnterior->getValor()){
+//                 nodoAnterior->setHeuristica(nuevaHeuristica);
+//                 nodoAnterior->setCoste(nuevoCoste);
+//             } else{
+//                 abiertos.push_back(nuevoNodo);
+//             }
+
+//             sort(abiertos.begin(), abiertos.end(), [](const Nodo &a, const Nodo &b) {
+//                 return a.getValor() < b.getValor();
+//             });
+        
+//             if (mejorHeuristica < heuristicaActual && heuristicaActual < alfa) { //Comparamos el estado actual con alfa, característico de la escalada simple estocástica.
+//                 tablero = temp;
+//                 mejorVehiculo = vehiculo;
+//                 mejorMovimiento = mov;
+//                 break; //En el momento que encontramos un estado con una heurística mejor que la actual, 
+//                        //salimos del bucle para no probar ningún otro estado, cosa que caracteriza a la escalada simple.
+//             }
+//         }
+
+//         if (mejorVehiculo == ' ') {
+//             break;
+//         }
+
+//         solucion.push_back(mejorVehiculo);
+
+//         cout << "Has movido el vehículo " << mejorVehiculo
+//              << " (" << mejorMovimiento << ")" << endl;
+//         mostrar(tablero);
+//         cout << "Heurística actual: " << mejorHeuristica << endl;
+//         cout << endl;
+
+//         if (mejorHeuristica == 0) {
+//             break;
+//         }
+
+//         iter++;
+//     }
+
+//     if(numNodosGenerados == 0){
+//         solucion.push_back(' ');
+//     }
+
+//     mostrarSolucionTablero(solucion);
+//     auto fin = chrono::high_resolution_clock::now();
+//     auto duracion = chrono::duration_cast<chrono::milliseconds>(fin - inicio);
+//     cout << "Tiempo de ejecución: " << duracion.count() << " ms" << endl;
+//     cout << "Número de nodos generados: " << numNodosGenerados << endl;
+
+//     tablero.agregarSolucion(solucion);
+//     return solucion;
+// }
