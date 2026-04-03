@@ -49,7 +49,7 @@ int main(){
         break;
 
     case 4:
-        calcularAlgoritmoEstrella(tablero);
+        //calcularAlgoritmoEstrella(tablero);
     
     default:
         cout << "Opción inválida, elija de nuevo. " << endl;

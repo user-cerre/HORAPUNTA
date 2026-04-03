@@ -25,16 +25,25 @@ void cargarTablero(Tablero &tablero)
 {
     map<int, string> Tableros;
     vector<string> salaDeEspera; // Se utiliza para ordenar el nombre de los ficheros antes de ponerlo en el mapa
-    string rutaSalidas = "../Salidas";
+    string rutaEntradas = "../Entradas";
     vector<vector<char>> tableroAux (filas, vector<char>(columnas));
-    if (filesystem::exists(rutaSalidas) && filesystem::is_directory(rutaSalidas))
+    if (filesystem::exists(rutaEntradas) && filesystem::is_directory(rutaEntradas))
     {
 
-        for (directory_entry archivo : directory_iterator(rutaSalidas))
+        for (directory_entry archivo : directory_iterator(rutaEntradas))
         { // directory_entry no pilla los directorios en orden, por eso metemos las ruta en un vector
             salaDeEspera.push_back(archivo.path());
         }
-        sort(salaDeEspera.begin(), salaDeEspera.end());
+        // sort(salaDeEspera.begin(), salaDeEspera.end());
+        sort(salaDeEspera.begin(), salaDeEspera.end(), [](const string &a, const string &b) {
+        auto extraerNumero = [](const string &ruta) {
+            size_t inicio = ruta.find("HORAPUNTA") + 9;
+            size_t fin = ruta.find(".txt");
+            return stoi(ruta.substr(inicio, fin - inicio));
+        };
+
+        return extraerNumero(a) < extraerNumero(b);
+    });
 
         int i = 1;
         for (string ruta : salaDeEspera)
