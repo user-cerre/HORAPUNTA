@@ -41,9 +41,9 @@ int Nodo::getValor() const {
     return heuristica + coste;
 }
 
-bool Nodo::operator==(const Nodo& otro) const {
+bool Nodo::operator==(const Nodo& n) const {
     const auto& tab1 = this->estado.getTablero();
-    const auto& tab2 = otro.estado.getTablero();
+    const auto& tab2 = n.estado.getTablero();
     
     if (tab1.size() != tab2.size()) return false;
     
