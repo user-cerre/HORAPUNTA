@@ -3,10 +3,10 @@
 using namespace std;
 
 /**
-*@brief representa un nodo dentro de la estructura de búsqueda
+* @brief representa un nodo dentro de la estructura de búsqueda
 *
-*Esta clase almacena el estado actual del tablero, 
-*un puntero el nodo padre, la heuristica y el coste acumulado para llegar a ese estado.
+* Esta clase almacena el estado actual del tablero, 
+* un puntero el nodo padre, la heuristica y el coste acumulado para llegar a ese estado.
 */
 class Nodo {
     private:
@@ -16,7 +16,7 @@ class Nodo {
         int coste;  ///< Coste acumulado hasta dicho nodo.
     public:
         /**
-        * @brief Constructor parametrizado de la clase Nodo
+        * @brief Constructor parametrizado de la clase Nodo.
         *
         * @param t Estado del tablero.
         * @param p Puntero al nodo padre.
