@@ -21,6 +21,10 @@ int Nodo::getCoste() const {
     return coste;
 }
 
+char Nodo::getMovimiento() const {
+    return movimiento;
+}
+
 void Nodo::setEstado(Tablero t){
     estado = t;
 }
@@ -39,6 +43,10 @@ void Nodo::setCoste(int c){
 
 int Nodo::getValor() const {
     return heuristica + coste;
+}
+
+void Nodo::setMovimiento(char m){
+    movimiento = m;
 }
 
 bool Nodo::operator==(const Nodo& n) const {

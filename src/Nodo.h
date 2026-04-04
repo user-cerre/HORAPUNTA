@@ -14,6 +14,7 @@ class Nodo {
         Nodo* padre;    ///< Puntero al nodo padre, utilizado para reconstruir el camino desde el nodo raíz hasta el nodo actual.
         int heuristica; ///< Valor heurístico que estima el costo restante para alcanzar el objetivo desde el nodo actual.
         int coste;  ///< Coste acumulado hasta dicho nodo.
+        char movimiento;   ///< Vehículo movido en el tablero para llegar a este estado.
     public:
         /**
         * @brief Constructor parametrizado de la clase Nodo.
@@ -45,6 +46,11 @@ class Nodo {
         */
         int getCoste() const;
         /**
+         * @brief Obtiene el vehículo movido para llegar a ese estado.
+         * @return Letra identificativa del vehículo.
+         */
+        char getMovimiento() const;
+        /**
         * @brief Establece el estado del nodo.
         * @param t Nuevo estado del tablero.
         */
@@ -73,6 +79,11 @@ class Nodo {
         * @return int valor actual 
         */
         int getValor() const;
+        /**
+         * @brief Establece el vehículo movido para llegar a este estado.
+         * @param m Letra identificativa del vehículo.
+         */
+        void setMovimiento(char m);
         /**
         * @brief Compara dos nodos.
         *

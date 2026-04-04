@@ -10,6 +10,7 @@
 #include <set>
 #include <queue>
 #include <chrono>
+#include "Nodo.h"
 #include "Tablero.h"
 
 using namespace std;
@@ -102,7 +103,7 @@ char moverVehiculo(Tablero &tablero, char movimiento, bool mostrarMensajes);
  * @return true Si el tablero es un estado objetivo.
  * @return false En caso contrario.
  */
-bool esObjetivo(Tablero &tablero);
+bool esObjetivo(Tablero tablero);
 /**
  * @brief Calcula la distancia de Manhattan entre dos puntos.
  * @param x1 Coordenada X del primer punto.
@@ -173,11 +174,16 @@ vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero);
  * @return El vector de caracteres que representa la solución.
  */
 vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero);
+
+Nodo * comprobarEnVectores(vector<Nodo*> &abiertos, vector<Nodo*> &cerrados, Nodo *nuevoNodo);
+
+void actualizarDescendientesRecursivo(vector<Nodo*> &cerrados, Nodo* nodoMejorado);
+
 /**
  * @brief Calcula la solución utilizando el método de Algoritmo A*.
  * @param tablero Referencia al objeto tablero.
  * @return El vector de caracteres que representa la solución.
  */
-vector<char> calcularAlgoritmoEstrella(Tablero &tablero);
+vector<char> calcularAlgoritmoAEstrella(Tablero &tablero);
 
 #endif
