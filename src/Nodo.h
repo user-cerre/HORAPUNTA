@@ -18,7 +18,6 @@ class Nodo {
     public:
         /**
         * @brief Constructor parametrizado de la clase Nodo.
-        *
         * @param t Estado del tablero.
         * @param p Puntero al nodo padre.
         * @param h Valor heurístico actual.
@@ -51,6 +50,15 @@ class Nodo {
          */
         char getMovimiento() const;
         /**
+        * @brief Obtiene el valor del nodo.
+        *
+        * Utilizado en algoritmos de búsqueda informada (como A*),
+        * donde el valor se define como la suma del coste acumulado
+        * y la heurística.
+        * @return int valor actual 
+        */
+        int getValor() const;
+        /**
         * @brief Establece el estado del nodo.
         * @param t Nuevo estado del tablero.
         */
@@ -71,15 +79,6 @@ class Nodo {
         */
         void setCoste(int c);
         /**
-        * @brief Obtiene el valor del nodo.
-        *
-        * Utilizado en algoritmos de búsqueda informada (como A*),
-        * donde el valor se define como la suma del coste acumulado
-        * y la heurística.
-        * @return int valor actual 
-        */
-        int getValor() const;
-        /**
          * @brief Establece el vehículo movido para llegar a este estado.
          * @param m Letra identificativa del vehículo.
          */
@@ -88,6 +87,7 @@ class Nodo {
         * @brief Compara dos nodos.
         *
         * Dos nodos osn considerados iguales si sus estados son equivalentes.
+        * 
         * @param n Nodo a comparar
         * @return true Si los nodos son iguales.
         * @return false En caso contrario.

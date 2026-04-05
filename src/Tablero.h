@@ -33,11 +33,15 @@ class Tablero
 public:
         /**
          * @brief Constructor parametrizado de la clase Tablero
-         * 
          * @param filas Número de filas.
          * @param columnas Número de columnas.
          */
         Tablero(int filas, int columnas);
+        /**
+         * @brief Establece la matriz del tablero.
+         * @param nuevoTablero Nuevo matriz del tablero.
+         */
+        void setTablero(const vector<vector<char>> &nuevoTablero);
         /**
          * @brief Obtiene la matriz del tablero actual.
          * @return Referencia constante a la matriz de caracteres del tablero.
@@ -58,11 +62,7 @@ public:
          * @param movimientos Vector de movimientos uadso para llegar a una solución válida
          */
         void agregarSolucion(const vector<char> &movimientos);
-        /**
-         * @brief Establece la matriz del tablero.
-         * @param nuevoTablero Nuevo matriz del tablero.
-         */
-        void setTablero(const vector<vector<char>> &nuevoTablero);
+        
         
     };  
 #endif

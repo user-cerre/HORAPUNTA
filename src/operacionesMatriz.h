@@ -138,13 +138,13 @@ bool estaEnEsquinaDeTablero(int xX, int xY);
  * @param tablero Referencia al objeto tablero.
  * @return El valor de la heurística.
  */
-int calcularHeuristicaXAZ(Tablero &tablero);
+// int calcularHeuristicaXAZ(Tablero &tablero);
 /**
  * @brief Calcula la heurística para la posición de Z respecto a los bordes.
  * @param tablero Referencia al objeto tablero.
  * @return El valor de la heurística.
  */
-int distanciaZABorde(Tablero &tablero);
+// int distanciaZABorde(Tablero &tablero);
 /**
  * @brief Calcula la heurística para el tablero.
  * 
@@ -174,11 +174,24 @@ vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero);
  * @return El vector de caracteres que representa la solución.
  */
 vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero);
-
+/***
+ * @brief Calcula la solución utilizando el método de Algoritmo A*.
+ * @param tablero Referencia al objeto tablero.
+ * @return El vector de caracteres que representa la solución.
+ */
 Nodo * comprobarEnVectores(vector<Nodo*> &abiertos, vector<Nodo*> &cerrados, Nodo *nuevoNodo);
-
+/***
+ * @brief Reconstruye la solución a partir del nodo objetivo encontrado por el algoritmo A*.
+ * @param nodoObjetivo Puntero al nodo objetivo encontrado.
+ * @param solucion Vector de caracteres donde se guardarán los movimientos para llegar a la solución.
+ */
 void actualizarDescendientesRecursivo(vector<Nodo*> &cerrados, Nodo* nodoMejorado);
-
+/**
+ * @brief Reconstruye la solución a partir del nodo objetivo encontrado por el algoritmo A*.
+ * @param nodoObjetivo Puntero al nodo objetivo encontrado.
+ * @param solucion Vector de caracteres donde se guardarán los movimientos para llegar a la solución.
+ */
+void reconstruirSolucionAEstrella(Nodo* nodo, vector<char> &solucion);
 /**
  * @brief Calcula la solución utilizando el método de Algoritmo A*.
  * @param tablero Referencia al objeto tablero.
