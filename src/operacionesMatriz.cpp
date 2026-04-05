@@ -59,8 +59,23 @@ void cargarTablero(Tablero &tablero)
 
     while (!opcionValida)
     {
-        cout << "Seleccione un tablero para jugar (1-" << Tableros.size() << "): ";
-        cin >> opcion;
+        cout << "Seleccione un tablero para jugar (1-" << Tableros.size() << ") o 0 para salir: ";
+        if (!(cin >> opcion)) // Si la lectura falla (devuelve false)
+    {
+        cerr << "Error: Debes introducir un numero." << endl;
+        
+        cin.clear(); //Limpiar el estado de error de cin
+        
+        //Descarta lo que haya en el buffer hasta el siguiente salto de línea
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        
+        continue; // Salta al inicio del bucle para volver a preguntar
+    }
+        if (opcion == 0)
+        {
+            cout << "Saliendo del programa. ¡Hasta luego!" << endl;
+            return;
+        }
         if (Tableros.find(opcion) != Tableros.end())
         {
             string nombreArchivo = Tableros[opcion];

@@ -22,40 +22,41 @@ int main(){
     Tablero tablero(filas, columnas);
 
     vector<vector<char>> aux(filas, vector<char>(columnas));
-    cargarTablero(tablero);
-    mostrar(tablero);
-    cout << endl;
+    while(true){//Solo para recoger la información.
+        cargarTablero(tablero);
+        mostrar(tablero);
+        cout << endl;
 
-    int algoritmoBusqueda;
-    cout << "Elige qué algoritmo usar para intentar resolver el tablero elegido: " << endl;
-    cout << "1 - Escalada Simple." << endl;
-    cout << "2 - Escalada Máxima Pendiente." << endl;
-    cout << "3 - Escalada Simple Estocástica." << endl;
-    cout << "4 - Algoritmo A*." << endl;
-    cin >> algoritmoBusqueda;
+        int algoritmoBusqueda;
+        cout << "Elige qué algoritmo usar para intentar resolver el tablero elegido: " << endl;
+        cout << "1 - Escalada Simple." << endl;
+        cout << "2 - Escalada Máxima Pendiente." << endl;
+        cout << "3 - Escalada Simple Estocástica." << endl;
+        cout << "4 - Algoritmo A*." << endl;
+        cin >> algoritmoBusqueda;
 
-    switch (algoritmoBusqueda)
-    {
-    case 1:
-        calcularEscaladaSimple(tablero);
-        break;
+        switch (algoritmoBusqueda)
+        {
+        case 1:
+            calcularEscaladaSimple(tablero);
+            break;
 
-    case 2:
-        calcularEscaladaMaximaPendiente(tablero);
-        break;
-    
-    case 3:
-        calcularEscaladaSimpleEstocastica(tablero);
-        break;
+        case 2:
+            calcularEscaladaMaximaPendiente(tablero);
+            break;
+        
+        case 3:
+            calcularEscaladaSimpleEstocastica(tablero);
+            break;
 
-    case 4:
-        calcularAlgoritmoAEstrella(tablero);
-        break;
-    
-    default:
-        cout << "Opción inválida, elija de nuevo. " << endl;
-        break;
+        case 4:
+            calcularAlgoritmoAEstrella(tablero);
+            break;
+        
+        default:
+            cout << "Opción inválida, elija de nuevo. " << endl;
+            break;
+        }
     }
-
     return 0; 
 }
