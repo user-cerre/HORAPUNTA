@@ -10,6 +10,7 @@
 #include <set>
 #include <queue>
 #include <chrono>
+#include <random>
 #include "Nodo.h"
 #include "Tablero.h"
 
@@ -36,7 +37,7 @@ void cargarTablero(Tablero &tablero);
  * @brief Escribe por pantalla los pasos para encontrar las soluciones.
  * @param solucion Vector de caracteres en donde se han guardado los pasos para llegar a la solución.
  */
-void mostrarSolucionTablero(vector<char> solucion);
+void mostrarSolucionTablero(vector<char> solucion, int heuristica);
 /**
  * @brief Devuelve las posiciones X e Y de X en el tablero.
  * 

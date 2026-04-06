@@ -114,10 +114,10 @@ void cargarTablero(Tablero &tablero)
     }
 }
 
-void mostrarSolucionTablero(vector<char> solucion) {
+void mostrarSolucionTablero(vector<char> solucion, int heuristica){
     cout << "Secuencia de la solución: ";
-    if (solucion.empty()) {
-        cout << "No se ha hallado la solución." << endl;;
+    if (solucion.empty() || heuristica != 0) {
+        cout << "No se ha hallado la solución." << endl;
         return;
     }
     if(solucion.at(0) == ' '){
@@ -630,7 +630,7 @@ vector<char> calcularEscaladaSimple(Tablero &tablero){
         solucion.push_back(' ');
     }
 
-    mostrarSolucionTablero(solucion);
+    mostrarSolucionTablero(solucion, calcularHeuristicaTablero(tablero));
     auto fin = chrono::high_resolution_clock::now();
     auto duracion = chrono::duration_cast<chrono::microseconds>(fin - inicio);
     cout << "Tiempo de ejecución: " << duracion.count() << " µs" << endl;
@@ -696,7 +696,7 @@ vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero) {
         solucion.push_back(' ');
     }
 
-    mostrarSolucionTablero(solucion);
+    mostrarSolucionTablero(solucion, calcularHeuristicaTablero(tablero));
     auto fin = chrono::high_resolution_clock::now();
     auto duracion = chrono::duration_cast<chrono::microseconds>(fin - inicio);
     cout << "Tiempo de ejecución: " << duracion.count() << " µs" << endl;
@@ -714,6 +714,10 @@ vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
     int numNodosGenerados = 0;
     int iterMax = 200;
     int iter = 0;
+    
+    //generar random
+    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+    default_random_engine motor(seed);
 
     while (!esObjetivo(tablero) && iter < iterMax) {
         int heuristicaActual = calcularHeuristicaTablero(tablero);
@@ -721,16 +725,22 @@ vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
         char mejorMovimiento = ' ';
         int mejorHeuristica = heuristicaActual;
 
-        for (char mov : {'u', 'd', 'l', 'r'}) {
+        //Aleatorizamos el orden de las direcciones para que no siempre se prueben en el mismo orden, lo cual haría que el algoritmo se comporte igual cada vez.
+        vector<char> direcciones = {'u', 'd', 'l', 'r'};
+        shuffle(direcciones.begin(), direcciones.end(), motor);
+
+        for (char mov : direcciones) {
             numNodosGenerados++;
             Tablero temp = tablero;
             char vehiculo = moverVehiculo(temp, mov, false);
             if (vehiculo == ' ') {
                 continue;
             }
-
-            mejorHeuristica = calcularHeuristicaTablero(temp);
-            if (mejorHeuristica < heuristicaActual && heuristicaActual < alfa) { //Comparamos el estado actual con alfa, característico de la escalada simple estocástica.
+            
+            int heuristicaNueva = calcularHeuristicaTablero(temp);
+            int mejora = heuristicaActual - heuristicaNueva;
+            if (mejora >= alfa) { //Comparamos el estado actual con alfa, característico de la escalada simple estocástica.
+                mejorHeuristica = heuristicaNueva;
                 tablero = temp;
                 mejorVehiculo = vehiculo;
                 mejorMovimiento = mov;
@@ -762,7 +772,7 @@ vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero)
         solucion.push_back(' ');
     }
 
-    mostrarSolucionTablero(solucion);
+    mostrarSolucionTablero(solucion, calcularHeuristicaTablero(tablero));
     auto fin = chrono::high_resolution_clock::now();
     auto duracion = chrono::duration_cast<chrono::microseconds>(fin - inicio);
     cout << "Tiempo de ejecución: " << duracion.count() << " µs" << endl;
@@ -925,7 +935,7 @@ vector<char> calcularAlgoritmoAEstrella(Tablero &tablero)
         solucion.push_back(' ');
     }
 
-    mostrarSolucionTablero(solucion);
+    mostrarSolucionTablero(solucion, calcularHeuristicaTablero(tablero));
     auto fin = chrono::high_resolution_clock::now();
     auto duracion = chrono::duration_cast<chrono::microseconds>(fin - inicio);
     cout << "Tiempo de ejecución: " << duracion.count() << " µs" << endl;
