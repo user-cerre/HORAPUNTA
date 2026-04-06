@@ -22,8 +22,12 @@ int main(){
     Tablero tablero(filas, columnas);
 
     vector<vector<char>> aux(filas, vector<char>(columnas));
-    while(true){//Solo para recoger la información.
-        cargarTablero(tablero);
+    bool finPrograma = false;
+    while(!finPrograma){
+        if(!cargarTablero(tablero)){
+            finPrograma = true;
+            continue;
+        };
         mostrar(tablero);
         cout << endl;
 

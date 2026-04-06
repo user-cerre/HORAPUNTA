@@ -18,7 +18,7 @@ void mostrar( Tablero &tablero)
     }
 }
 
-void cargarTablero(Tablero &tablero)
+bool cargarTablero(Tablero &tablero)
 {
     map<int, string> Tableros;
     vector<string> salaDeEspera; // Se utiliza para ordenar el nombre de los ficheros antes de ponerlo en el mapa
@@ -60,8 +60,8 @@ void cargarTablero(Tablero &tablero)
     while (!opcionValida)
     {
         cout << "Seleccione un tablero para jugar (1-" << Tableros.size() << ") o 0 para salir: ";
-        if (!(cin >> opcion)) // Si la lectura falla (devuelve false)
-    {
+        if (!(cin >> opcion)){ // Si la lectura falla (devuelve false)
+    
         cerr << "Error: Debes introducir un numero." << endl;
         
         cin.clear(); //Limpiar el estado de error de cin
@@ -70,11 +70,11 @@ void cargarTablero(Tablero &tablero)
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         
         continue; // Salta al inicio del bucle para volver a preguntar
-    }
+        }
         if (opcion == 0)
         {
             cout << "Saliendo del programa. ¡Hasta luego!" << endl;
-            return;
+            return false;
         }
         if (Tableros.find(opcion) != Tableros.end())
         {
@@ -112,6 +112,7 @@ void cargarTablero(Tablero &tablero)
             cout << "Opción no válida. Por favor, seleccione un número entre 1 y " << int(Tableros.size()) << "." << endl;
         }
     }
+    return true;
 }
 
 void mostrarSolucionTablero(vector<char> solucion, int heuristica){

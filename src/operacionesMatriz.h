@@ -31,8 +31,10 @@ void mostrar(Tablero &tablero);
 /**
  * @brief Sobreescribe el valor del objeto de la clase Tablero.
  * @param tablero ReferenciA al objeto de la clase Tablero.
+ * @return true Si el tablero se cargó correctamente.
+ * @return false En caso contrario.
  */
-void cargarTablero(Tablero &tablero);
+bool cargarTablero(Tablero &tablero);
 /**
  * @brief Escribe por pantalla los pasos para encontrar las soluciones.
  * @param solucion Vector de caracteres en donde se han guardado los pasos para llegar a la solución.
