@@ -7,11 +7,6 @@
 #include <map>
 #include <fstream>
 #include <filesystem>
-#include <set>
-#include <queue>
-#include <chrono>
-#include <random>
-#include "Nodo.h"
 #include "Tablero.h"
 
 using namespace std;
@@ -19,7 +14,6 @@ namespace fs = std::filesystem;
 
 extern const int filas;
 extern const int columnas;
-extern const int alfa;  // Valor umbral para la escalada simple estocástica.
 
 extern vector<vector<bool>> Visitados; 
 /**
@@ -107,99 +101,5 @@ char moverVehiculo(Tablero &tablero, char movimiento, bool mostrarMensajes);
  * @return false En caso contrario.
  */
 bool esObjetivo(Tablero tablero);
-/**
- * @brief Calcula la distancia de Manhattan entre dos puntos.
- * @param x1 Coordenada X del primer punto.
- * @param y1 Coordenada Y del primer punto.
- * @param x2 Coordenada X del segundo punto.
- * @param y2 Coordenada Y del segundo punto.
- * @return La distancia de Manhattan entre los dos puntos.
- */
-int distanciaManhattan(int x1, int y1, int x2, int y2);
-/**
- * @brief Cuenta los vehículos que bloquean la línea desde Z hacia un borde.
- * @param tableroAux Referencia al tablero auxiliar.
- * @param origenX Coordenada X del origen.
- * @param origenY Coordenada Y del origen.
- * @param dX Coordenada X de la dirección.
- * @param dY Coordenada Y de la dirección.
- * @return El número de vehículos que bloquean la línea.
- */
-int contarBloqueadoresEnLinea(const vector<vector<char>> &tableroAux,
-                              int origenX, int origenY,
-                              int dX, int dY);
-/**
- * @brief Verifica si una posición está en una esquina del tablero.
- * @param xX Coordenada X de la posición.
- * @param xY Coordenada Y de la posición.
- * @return true Si la posición está en una esquina del tablero.
- * @return false En caso contrario.
- */
-bool estaEnEsquinaDeTablero(int xX, int xY);
-/**
- * @brief Calcula la heurística para la posición de X respecto a Z.
- * @param tablero Referencia al objeto tablero.
- * @return El valor de la heurística.
- */
-// int calcularHeuristicaXAZ(Tablero &tablero);
-/**
- * @brief Calcula la heurística para la posición de Z respecto a los bordes.
- * @param tablero Referencia al objeto tablero.
- * @return El valor de la heurística.
- */
-// int distanciaZABorde(Tablero &tablero);
-/**
- * @brief Calcula la heurística para el tablero.
- * 
- * Esta heurística intenta valorar la mejor dirección de salida para Z, de la siguiente manera:
- *   - Cuanto más cerca esté Z de un borde, menor es el coste.
- *   - Cuantos más vehículos bloqueen la línea, mayor es el coste.
- *   - Si X está lejos de la casilla necesaria para mover Z (a su alrededor), mayor es el coste.
- * @param tablero Referencia al objeto tablero.
- * @return El valor de la heurística.
-*/
-int calcularHeuristicaTablero(Tablero &tablero);
-/**
- * @brief Calcula la solución utilizando el método de Escalada Simple.
- * @param tablero Referencia al objeto tablero.
- * @return El vector de caracteres que representa la solución.
- */
-vector<char> calcularEscaladaSimple(Tablero &tablero);
-/**
- * @brief Calcula la solución utilizando el método de Escalada Máxima Pendiente.
- * @param tablero Referencia al objeto tablero.
- * @return El vector de caracteres que representa la solución.
- */
-vector<char> calcularEscaladaMaximaPendiente(Tablero &tablero);
-/**
- * @brief Calcula la solución utilizando el método de Escalada Simple Estocástica.
- * @param tablero Referencia al objeto tablero.
- * @return El vector de caracteres que representa la solución.
- */
-vector<char> calcularEscaladaSimpleEstocastica(Tablero &tablero);
-/***
- * @brief Calcula la solución utilizando el método de Algoritmo A*.
- * @param tablero Referencia al objeto tablero.
- * @return El vector de caracteres que representa la solución.
- */
-Nodo * comprobarEnVectores(vector<Nodo*> &abiertos, vector<Nodo*> &cerrados, Nodo *nuevoNodo);
-/***
- * @brief Reconstruye la solución a partir del nodo objetivo encontrado por el algoritmo A*.
- * @param nodoObjetivo Puntero al nodo objetivo encontrado.
- * @param solucion Vector de caracteres donde se guardarán los movimientos para llegar a la solución.
- */
-void actualizarDescendientesRecursivo(vector<Nodo*> &cerrados, Nodo* nodoMejorado);
-/**
- * @brief Reconstruye la solución a partir del nodo objetivo encontrado por el algoritmo A*.
- * @param nodoObjetivo Puntero al nodo objetivo encontrado.
- * @param solucion Vector de caracteres donde se guardarán los movimientos para llegar a la solución.
- */
-void reconstruirSolucionAEstrella(Nodo* nodo, vector<char> &solucion);
-/**
- * @brief Calcula la solución utilizando el método de Algoritmo A*.
- * @param tablero Referencia al objeto tablero.
- * @return El vector de caracteres que representa la solución.
- */
-vector<char> calcularAlgoritmoAEstrella(Tablero &tablero);
 
 #endif

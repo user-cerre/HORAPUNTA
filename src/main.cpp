@@ -5,6 +5,7 @@
 #include <fstream>
 #include "operacionesMatriz.h"
 #include "Tablero.h"
+#include "MetodosBusqueda.h"
 using namespace std; 
 
     const int filas = 6;
