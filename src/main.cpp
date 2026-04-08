@@ -34,6 +34,7 @@ int main(){
 
         int algoritmoBusqueda;
         cout << "Elige qué algoritmo usar para intentar resolver el tablero elegido: " << endl;
+        cout << "0 - Salir del programa."<< endl;
         cout << "1 - Escalada Simple." << endl;
         cout << "2 - Escalada Máxima Pendiente." << endl;
         cout << "3 - Escalada Simple Estocástica." << endl;
@@ -42,6 +43,8 @@ int main(){
 
         switch (algoritmoBusqueda)
         {
+        case 0:
+        	finPrograma = true;
         case 1:
             calcularEscaladaSimple(tablero);
             break;

@@ -20,7 +20,7 @@ bool cargarTablero(Tablero &tablero)
 {
     map<int, string> Tableros;
     vector<string> salaDeEspera; // Se utiliza para ordenar el nombre de los ficheros antes de ponerlo en el mapa
-    string rutaEntradas = "../Entradas";
+    string rutaEntradas = "Entradas";
     vector<vector<char>> tableroAux (filas, vector<char>(columnas));
     if (filesystem::exists(rutaEntradas) && filesystem::is_directory(rutaEntradas))
     {
@@ -122,7 +122,7 @@ void mostrarSolucionTablero(vector<char> solucion, int heuristica){
     if(solucion.at(0) == ' '){
         cout << "El tablero ya está resuelto, no es necesario realizar ningún movimiento.";
     } else {
-        for (int i = 0; i < solucion.size(); i++) {
+        for (long unsigned int i = 0; i < solucion.size(); i++) {
             cout << solucion[i];
             if (i + 1 < solucion.size()) {
                 cout << ", ";
