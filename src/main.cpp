@@ -15,9 +15,9 @@ int main(){
 
     cout<<"=================HORA PUNTA================="<<endl;
     cout<<"Authors:"<<endl;
-    cerr<<"Eduardo Cabello Gil"<<endl;
-    cerr<<"Carlos Paredes Ruiz"<<endl;
-    cerr<<"Gabriel Ramos Sánchez"<<endl;
+    cout<<"Eduardo Cabello Gil"<<endl;
+    cout<<"Carlos Paredes Ruiz"<<endl;
+    cout<<"Gabriel Ramos Sánchez"<<endl;
     cout<<endl;
     
     Tablero tablero(filas, columnas);
