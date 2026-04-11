@@ -83,7 +83,7 @@ El operador de movimiento identifica el hueco X, determina qué vehículo adyace
 
 ## Metodología de desarrollo
 
-Según la documentación del proyecto, el desarrollo se apoyó en un flujo mixto entre trabajo humano y asistencia de IA, usando VS Code, GitHub y Live Share. También se emplearon técnicas de prompting como:
+El desarrollo del proyecto se ha apoyado en un flujo mixto entre trabajo humano y asistencia de IA, usando VS Code, GitHub y Live Share. También se han empleado técnicas de prompting como:
 
 - Socratic prompting.
 - Coach prompting.

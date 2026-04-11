@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <set>
-#include <queue>
 #include "operacionesMatriz.h"
 #include "Tablero.h"
 
